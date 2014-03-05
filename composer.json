@@ -1,0 +1,23 @@
+{
+    "name"              : "Actinarium/Philtre",
+    "description"       : "Philtre, a minimalistic framework for any data processing.",
+    "minimum-stability" : "dev",
+    "license"           : "MIT",
+    "authors"           : [
+        {
+            "name"  : "Actine",
+            "email" : "actine@actinarium.com",
+            "role"  : "Developer"
+        }
+    ],
+
+    "require" : {
+        "php" : ">=5.3"
+    },
+
+    "autoload" : {
+        "psr-4" : {
+            "\\Actinarium\\Philtre\\" : "./src"
+        }
+    }
+}
