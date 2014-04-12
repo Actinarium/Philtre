@@ -31,7 +31,7 @@ interface Filter
     public function setFilterContext(FilterContext &$filterContext);
 
     /**
-     * Each filter must implement this method in a valid fashion so that filter context can be aware of used streams.
+     * Every filter must implement this method in a valid fashion so that filter context can be aware of used streams.
      *
      * @return FilterIODescriptor valid descriptor with streams metadata
      */

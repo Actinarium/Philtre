@@ -1,6 +1,6 @@
 {
     "name"              : "Actinarium/Philtre",
-    "description"       : "Philtre, a minimalistic framework for any data processing.",
+    "description"       : "A minimalistic library for various Pipe & Filters scenarios",
     "minimum-stability" : "dev",
     "license"           : "MIT",
     "authors"           : [
@@ -13,6 +13,10 @@
 
     "require" : {
         "php" : ">=5.3"
+    },
+
+    "require-dev" : {
+        "phpunit/phpunit" : ">=3.7.0"
     },
 
     "autoload" : {
