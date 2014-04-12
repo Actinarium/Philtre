@@ -7,33 +7,36 @@
 
 namespace Actinarium\Philtre\Core;
 
+use Actinarium\Philtre\Core\Exceptions\StoringDataException;
 
 interface FilterContext
 {
     /**
-     * Use this method to add filters to Filter Context.
+     * Any FilterContext must implement this method so that Filters and PipelineManagers can use it to check whether
+     * stream with given ID exists. Should return true or false.
      *
-     * Implementation of this method should set back-reference of itself to the filter and add it to the tree,
-     * collection or pipeline (depending on implementation)
+     * @param string $streamId
      *
-     * @param Filter $filter
-     *
-     * @return mixed
+     * @return boolean
      */
-    public function registerFilter(Filter &$filter);
+    public function hasData($streamId);
 
     /**
-     * Filters should use this method to put data into context. Implementation is frivolous.
+     * Any FilterContext must implement this method so that Filters and PipelineManagers can use it to put data into
+     * context. Implementation is frivolous. Method should not return anything, but rather throw
+     * {@link StoringDataException} in case of failure.
      *
      * @param string $streamId
      * @param mixed $data
      *
-     * @return mixed
+     * @return void
+     * @throws StoringDataException
      */
     public function putData($streamId, &$data);
 
     /**
-     * Filters should use this method to get data from context. Implementation is frivolous.
+     * Any FilterContext must implement this method so that Filters and PipelineManagers can use it to get data from context.
+     * context. Implementation is frivolous.
      *
      * @param string $streamId
      *

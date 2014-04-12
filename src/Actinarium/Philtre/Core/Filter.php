@@ -7,42 +7,28 @@
 
 namespace Actinarium\Philtre\Core;
 
-
-use Actinarium\Philtre\Core\IO\Metadata\FilterIODescriptor;
+use Actinarium\Philtre\Core\Exceptions\FilterProcessingException;
 
 interface Filter
 {
-
     /**
-     * @param array|object $configuration Configuration passed to filter in any expected form
+     * Each filter must implement a constructor that accepts configuration and mandatory FilterContext
      *
-     * @return mixed
+     * @param FilterContext     $filterContext Mandatory filter context
+     * @param array|object|null $configuration Configuration passed to filter in any expected form
+     *
+     * @return \Actinarium\Philtre\Core\Filter
      */
-    public function setConfiguration($configuration);
-
-    /**
-     * This method should be implemented so that FilterContext can set a reference to itself to every filter registered
-     * within it.
-     *
-     * @param FilterContext $filterContext
-     *
-     * @return mixed
-     */
-    public function setFilterContext(FilterContext &$filterContext);
-
-    /**
-     * Every filter must implement this method in a valid fashion so that filter context can be aware of used streams.
-     *
-     * @return FilterIODescriptor valid descriptor with streams metadata
-     */
-    public function getFilterIODescriptor();
+    public function __construct(FilterContext $filterContext, $configuration = null);
 
     /**
      * This method should contain the logic that reads data from context, processes, and puts data back to context.
-     * It should not accept or return anything.
+     * For I/O it should use provided context rather than accept or return anything, however this is not forbidden,
+     * especially for custom PipelineManager implementations. In case of failure the method should throw
+     * {@link FilterProcessingException}.
      *
-     * @return void
+     * @return void|mixed
+     * @throws FilterProcessingException
      */
     public function process();
-
 } 
