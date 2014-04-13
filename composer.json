@@ -21,7 +21,7 @@
 
     "autoload" : {
         "psr-4" : {
-            "\\Actinarium\\Philtre\\" : "./src"
+            "Actinarium\\Philtre\\" : "./src/Actinarium/Philtre/"
         }
     }
 }

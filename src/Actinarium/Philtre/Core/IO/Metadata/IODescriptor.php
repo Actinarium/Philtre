@@ -15,6 +15,10 @@ class IODescriptor
     /** @var StreamDescriptor[] */
     protected $exportedStreams;
 
+    /**
+     * @param StreamDescriptor[] $requires
+     * @param StreamDescriptor[] $exports
+     */
     function __construct(array $requires, array $exports)
     {
         $this->requiredStreams = $requires;

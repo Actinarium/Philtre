@@ -7,7 +7,7 @@
  * @version GIT: $Id$
  */
 
-namespace Actinarium\Philtre\Impl\Simple;
+namespace Actinarium\Philtre\Core\Simple;
 
 
 use Actinarium\Philtre\Core\Filter;
@@ -22,9 +22,9 @@ abstract class AbstractSimpleFilter implements Filter
 {
 
     /** @var FilterContext */
-    protected $filterContext;
+    private $filterContext;
     /** @var array|object|null */
-    protected $configuration;
+    private $configuration;
 
     /**
      * @inheritdoc
@@ -33,5 +33,15 @@ abstract class AbstractSimpleFilter implements Filter
     {
         $this->filterContext = $filterContext;
         $this->configuration = $configuration;
+    }
+
+    protected function getFilterContext()
+    {
+        return $this->filterContext;
+    }
+
+    protected function getConfiguration()
+    {
+        return $this->configuration;
     }
 }

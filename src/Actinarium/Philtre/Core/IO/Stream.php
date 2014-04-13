@@ -19,13 +19,13 @@ class Stream
     /** @var mixed */
     protected $data;
 
-    public function __construct(&$data)
+    public function __construct($data)
     {
         $this->data = $data;
     }
 
     public function getData()
     {
-        return $this->getData();
+        return $this->data;
     }
 } 

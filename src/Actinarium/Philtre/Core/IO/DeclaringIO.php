@@ -20,7 +20,7 @@ use Actinarium\Philtre\Core\IO\Metadata\IODescriptor;
 interface DeclaringIO
 {
     /**
-     * Every filter must implement this method in a valid fashion so that filter context can be aware of used streams.
+     * This method must be implemented in valid fashion so that owning entity can be aware of used streams.
      *
      * @return IODescriptor valid descriptor with streams metadata
      */

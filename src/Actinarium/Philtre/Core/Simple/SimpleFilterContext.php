@@ -7,15 +7,12 @@
  * @version GIT: $Id$
  */
 
-namespace Actinarium\Philtre\Impl\Simple;
+namespace Actinarium\Philtre\Core\Simple;
 
 
 use Actinarium\Philtre\Core\Exceptions\InvalidIdentifierException;
-use Actinarium\Philtre\Core\Exceptions\StoringDataException;
-use Actinarium\Philtre\Core\Exceptions\UndeclaredStreamException;
 use Actinarium\Philtre\Core\Exceptions\UnregisteredStreamException;
 use Actinarium\Philtre\Core\FilterContext;
-use Actinarium\Philtre\Core\IO\Stream;
 
 class SimpleFilterContext implements FilterContext
 {
@@ -36,7 +33,7 @@ class SimpleFilterContext implements FilterContext
     /**
      * @inheritdoc
      */
-    public function putData($streamId, $data)
+    public function setData($streamId, $data)
     {
         if (!is_string($streamId)) {
             throw new InvalidIdentifierException("Non-string entity was provided as stream ID");
