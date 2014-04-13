@@ -10,6 +10,7 @@
 namespace Actinarium\Philtre\Core\Simple;
 
 
+use Actinarium\Philtre\Core\Exceptions\InvalidIdentifierException;
 use Actinarium\Philtre\Core\Filter;
 use Actinarium\Philtre\Core\FilterContext;
 
@@ -24,15 +25,15 @@ abstract class AbstractSimpleFilter implements Filter
     /** @var FilterContext */
     private $filterContext;
     /** @var array|object|null */
-    private $configuration;
+    private $parameters;
 
     /**
      * @inheritdoc
      */
-    public function __construct(FilterContext $filterContext, $configuration = null)
+    public function __construct(FilterContext $filterContext, $parameters = null)
     {
         $this->filterContext = $filterContext;
-        $this->configuration = $configuration;
+        $this->parameters = $parameters;
     }
 
     protected function getFilterContext()
@@ -40,8 +41,23 @@ abstract class AbstractSimpleFilter implements Filter
         return $this->filterContext;
     }
 
-    protected function getConfiguration()
+    protected function getParameters()
     {
-        return $this->configuration;
+        return $this->parameters;
+    }
+
+    protected function getParameter($name)
+    {
+        if (!is_string($name)) {
+            throw new InvalidIdentifierException("Non-string was provided as parameter name");
+        }
+
+        if (is_array($this->parameters) && array_key_exists($name, $this->parameters)) {
+            return $this->parameters[$name];
+        } elseif (is_object($this->parameters) && isset($this->parameters->$name)) {
+            return $this->parameters->$name;
+        } else {
+            return null;
+        }
     }
 }

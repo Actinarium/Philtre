@@ -16,11 +16,11 @@ interface Filter
      * not look up for configuration themselves, but PipelineManagers should pass it to them.
      *
      * @param FilterContext     $filterContext Mandatory filter context
-     * @param array|object|null $configuration Configuration passed to filter in any expected form
+     * @param array|object|null $parameters Parameters passed to filter in any expected form
      *
      * @return \Actinarium\Philtre\Core\Filter
      */
-    public function __construct(FilterContext $filterContext, $configuration = null);
+    public function __construct(FilterContext $filterContext, $parameters = null);
 
     /**
      * This method should contain the logic that reads data from context, processes, and puts data back to context.

@@ -37,8 +37,8 @@ class RegexReplaceFilter extends AbstractSimpleFilter implements DeclaringIO {
     {
         $input = $this->getFilterContext()->getData("in");
         $output = preg_replace(
-            $this->getConfiguration()->regex,
-            $this->getConfiguration()->replacement,
+            $this->getParameters()->regex,
+            $this->getParameters()->replacement,
             $input
         );
         $this->getFilterContext()->setData("out", $output);

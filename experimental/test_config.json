@@ -1,3 +1,57 @@
 {
+    "filters" : {
+        "regexReplace" : "\\Actinarium\\Philtre\\Impl\\Simple\\RegexReplaceFilter"
+    },
 
+    "initStreams" : {
+        "IN"   : "Hello World!",
+        "S03" : "This stream is never used."
+    },
+
+    "return" : {
+        "output" : "OUT"
+    },
+
+    "chain" : [
+        {
+            "filter"     : "regexReplace",
+            "context"    : "C01",
+            "parameters" : {
+                "regex"       : "/Wor/",
+                "replacement" : "Phi"
+            },
+            "requires"   : {
+                "in" : "IN"
+            },
+            "exports"    : {
+                "out" : "S01"
+            }
+        },
+        {
+            "filter"     : "\\Actinarium\\Philtre\\Impl\\Simple\\RegexReplaceFilter",
+            "parameters" : {
+                "regex"       : "/d(?=!)/",
+                "replacement" : "tre"
+            },
+            "requires"   : {
+                "in" : "S01"
+            },
+            "exports"    : {
+                "out" : "OUT"
+            }
+        },
+        {
+            "filter"     : "regexReplace",
+            "parameters" : {
+                "regex"       : "/d(?=!)/",
+                "replacement" : "tre once again"
+            },
+            "requires"   : {
+                "in" : "S01"
+            },
+            "exports"    : {
+                "out" : "S02"
+            }
+        }
+    ]
 }
