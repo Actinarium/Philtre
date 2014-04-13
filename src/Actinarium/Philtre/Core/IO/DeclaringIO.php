@@ -1,6 +1,6 @@
 <?php
 /**
- * @author Actine <actine@actinarium.com>
+ * @author  Actine <actine@actinarium.com>
  * Date: 13.04.14
  * Time: 2:20
  *
@@ -8,6 +8,7 @@
  */
 
 namespace Actinarium\Philtre\Core\IO;
+
 use Actinarium\Philtre\Core\IO\Metadata\IODescriptor;
 
 /**
@@ -16,7 +17,8 @@ use Actinarium\Philtre\Core\IO\Metadata\IODescriptor;
  *
  * @package Actinarium\Philtre\Core
  */
-interface DeclaringIO {
+interface DeclaringIO
+{
     /**
      * Every filter must implement this method in a valid fashion so that filter context can be aware of used streams.
      *

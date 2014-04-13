@@ -8,6 +8,7 @@
 namespace Actinarium\Philtre\Core\Exceptions;
 
 
-class StoringDataException extends \RuntimeException {
+class StoringDataException extends \RuntimeException
+{
 
 } 

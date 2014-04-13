@@ -2,13 +2,13 @@
 /**
  * @author pdanyliuk
  * Date: 13.04.14
- * Time: 2:36
+ * Time: 3:12
  */
 
 namespace Actinarium\Philtre\Core\Exceptions;
 
 
-class FilterProcessingException extends \RuntimeException
+class InvalidIdentifierException extends \RuntimeException
 {
 
 } 

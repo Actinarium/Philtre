@@ -1,6 +1,6 @@
 <?php
 /**
- * @author Actine <actine@actinarium.com>
+ * @author  Actine <actine@actinarium.com>
  * Date: 13.04.14
  * Time: 2:55
  *
@@ -14,6 +14,7 @@ namespace Actinarium\Philtre\Core\IO;
  *
  * @package Actinarium\Philtre\Core\IO
  */
-interface ProvidingIO {
-
+interface ProvidingIO
+{
+    // todo
 } 

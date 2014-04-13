@@ -8,7 +8,7 @@
 namespace Actinarium\Philtre\Core\Exceptions;
 
 
-class UndeclaredStreamException extends \RuntimeException
+class UnregisteredStreamException extends \RuntimeException
 {
 
 } 

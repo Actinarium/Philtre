@@ -27,12 +27,12 @@ interface FilterContext
      * {@link StoringDataException} in case of failure.
      *
      * @param string $streamId
-     * @param mixed $data
+     * @param mixed  $data
      *
      * @return void
      * @throws StoringDataException
      */
-    public function putData($streamId, &$data);
+    public function putData($streamId, $data);
 
     /**
      * Any FilterContext must implement this method so that Filters and PipelineManagers can use it to get data from context.
