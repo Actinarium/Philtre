@@ -16,6 +16,7 @@ use Actinarium\Philtre\Core\PipelineManager;
 
 class SimplePipelineManager implements PipelineManager
 {
+    /** @var object */
     private $configuration;
     /** @var PromisingStreamedFilterContext */
     private $streamHolder;

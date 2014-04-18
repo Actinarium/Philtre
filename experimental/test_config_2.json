@@ -1,0 +1,72 @@
+{
+    "filters" : {
+        "concat" : "\\Actinarium\\Philtre\\Impl\\Simple\\StringConcatFilter"
+    },
+
+    "initStreams" : {
+        "IN1" : "0",
+        "IN2" : "1"
+    },
+
+    "return" : ["IN1", "IN2", "OUT"],
+
+    "chain" : [
+        {
+            "filter"   : "concat",
+            "requires" : {
+                "in1" : "IN1",
+                "in2" : "IN2"
+            },
+            "exports"  : {
+                "out" : "OUT"
+            }
+        },
+        {
+            "filter"   : "concat",
+            "requires" : {
+                "in1" : "IN1",
+                "in2" : "IN2"
+            },
+            "exports"  : {
+                "out" : "OUT"
+            }
+        },
+        {
+            "filter"   : "concat",
+            "context"  : "C1",
+            "requires" : {
+                "in1" : "IN1",
+                "in2" : "IN2"
+            },
+            "exports"  : {
+                "out" : "OUT"
+            }
+        },
+        {
+            "filter"   : "concat",
+            "context"  : "C2",
+            "requires" : {
+                "in1" : "IN1",
+                "in2" : "IN2"
+            }
+        },
+        {
+            "filter"   : "concat",
+            "context"  : "C1",
+            "requires" : {
+                "in1" : "IN1",
+                "in2" : "IN2"
+            },
+            "exports"  : {
+                "out" : "OUT"
+            }
+        },
+        {
+            "filter"   : "concat",
+            "context"  : "C2",
+            "exports"  : {
+                "out" : "OUT"
+            }
+        }
+    ]
+}

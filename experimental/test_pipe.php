@@ -13,7 +13,7 @@ use Actinarium\Philtre\Core\Simple\PromisingStreamedFilterContext;
 use Actinarium\Philtre\Core\Simple\SimplePipelineManager;
 use Actinarium\Philtre\Impl\Simple\RegexReplaceFilter;
 
-// 1. Process data without manager
+/*// 1. Process data without manager
 $inputString = "Hello World!";
 $filterConfig1 = json_decode('{"regex" : "@Wor@", "replacement" : "Phi"}');
 $filterConfig2 = json_decode('{"regex" : "@d(?=!)@", "replacement" : "tre"}');
@@ -33,6 +33,13 @@ echo $context2->getData("out");
 
 // 2. Process data with Pipeline Manager
 $config = json_decode(file_get_contents("test_config.json"));
+$manager = new SimplePipelineManager($config);
+$result = $manager->process();
+
+var_dump($result);*/
+
+// 3. Process data with manager 2
+$config = json_decode(file_get_contents("test_config_2.json"));
 $manager = new SimplePipelineManager($config);
 $result = $manager->process();
 

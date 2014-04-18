@@ -4,7 +4,7 @@
     },
 
     "initStreams" : {
-        "IN"   : "Hello World!",
+        "IN"  : "Hello World!",
         "S03" : "This stream is never used."
     },
 
