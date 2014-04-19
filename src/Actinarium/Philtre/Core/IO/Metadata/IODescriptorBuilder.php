@@ -112,27 +112,16 @@ class IODescriptorBuilder
 
     private function pushTempToAppropriateList()
     {
+        $streamDesc = new StreamDescriptor($this->temp['streamId'], $this->temp['types'], $this->temp['description']);
         switch ($this->temp->type) {
             case 'require':
-                $this->requiredStreams[] = new StreamDescriptor(
-                    $this->temp['streamId'],
-                    $this->temp['types'],
-                    $this->temp['description']
-                );
+                $this->requiredStreams[] = $streamDesc;
                 break;
             case 'export':
-                $this->exportedStreams[] = new StreamDescriptor(
-                    $this->temp['streamId'],
-                    $this->temp['types'],
-                    $this->temp['description']
-                );
+                $this->exportedStreams[] = $streamDesc;
                 break;
             case 'use':
-                $this->usedStreams[] = new StreamDescriptor(
-                    $this->temp['streamId'],
-                    $this->temp['types'],
-                    $this->temp['description']
-                );
+                $this->usedStreams[] = $streamDesc;
                 break;
         }
     }
