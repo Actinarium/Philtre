@@ -8,21 +8,47 @@
 namespace Actinarium\Philtre\Core\IO\Metadata;
 
 
+use Actinarium\Philtre\Core\Exceptions\IncompleteStreamDescriptorException;
+use InvalidArgumentException;
+
 class StreamDescriptor
 {
-    protected $id;
+    /** @var string */
+    protected $streamId;
+    /** @var null|string */
     protected $description;
+    /** @var string[] */
     protected $types;
 
-    function __construct($id, array $types, $description = null)
+    /**
+     * @param string          $streamId    Stream identifier (any conventional string)
+     * @param string|string[] $types       A type or array of types. As long as the type is conventional it can be used:
+     *                                     validator should only check that the input of filter B can handle any type
+     *                                     that can be produced by output of filter A
+     * @param string|null     $description Optional description of the stream, to be used in chain designers etc.
+     *
+     * @throws \InvalidArgumentException if streamId or types is missing or invalid, or description is not string.
+     */
+    function __construct($streamId, $types, $description = null)
     {
-        $this->id = $id;
-        $this->types = $types;
+        if (empty($streamId) || empty($types) || !is_string($streamId) || !(is_array($types) || is_string($types))) {
+            throw new InvalidArgumentException('streamId and types are invalid or empty');
+        }
+        if (!empty($description) && !is_string($description)) {
+            throw new InvalidArgumentException('illegal type provided for description');
+        }
+
+        $this->streamId = $streamId;
+        if (is_array($types)) {
+            $this->types = $types;
+        } elseif (is_string($types)) {
+            $this->types = array($types);
+        }
         $this->description = $description;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getDescription()
     {
@@ -32,17 +58,16 @@ class StreamDescriptor
     /**
      * @return string
      */
-    public function getId()
+    public function getStreamId()
     {
-        return $this->id;
+        return $this->streamId;
     }
 
     /**
-     * @return array
+     * @return string[]
      */
     public function getTypes()
     {
         return $this->types;
     }
-
-} 
+}

@@ -1,8 +1,8 @@
 {
     "name"              : "Actinarium/Philtre",
-    "description"       : "A minimalistic library for various Pipe & Filters scenarios",
+    "description"       : "A simple solution to build configurable processing chains with filters and streams.",
     "minimum-stability" : "dev",
-    "license"           : "MIT",
+    "license"           : "BSD-3-Clause",
     "authors"           : [
         {
             "name"  : "Actine",

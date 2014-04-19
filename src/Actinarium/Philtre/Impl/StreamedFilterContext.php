@@ -7,15 +7,16 @@
  * @version GIT: $Id$
  */
 
-namespace Actinarium\Philtre\Core\Simple;
+namespace Actinarium\Philtre\Impl;
 
 
 use Actinarium\Philtre\Core\Exceptions\InvalidIdentifierException;
 use Actinarium\Philtre\Core\Exceptions\UnregisteredStreamException;
 use Actinarium\Philtre\Core\FilterContext;
 use Actinarium\Philtre\Core\IO\Stream;
+use Actinarium\Philtre\Core\StreamOperatingFilterContext;
 
-class StreamedFilterContext implements FilterContext
+class StreamedFilterContext implements FilterContext, StreamOperatingFilterContext
 {
     /** @var Stream[] */
     protected $streamsBag;
@@ -77,7 +78,7 @@ class StreamedFilterContext implements FilterContext
      *
      * @param $streamId
      *
-     * @return Stream
+     * @return ImmutableStream
      * @throws \Actinarium\Philtre\Core\Exceptions\InvalidIdentifierException
      * @throws \Actinarium\Philtre\Core\Exceptions\UnregisteredStreamException
      */

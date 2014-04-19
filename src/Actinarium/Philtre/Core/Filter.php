@@ -13,7 +13,7 @@ interface Filter
 {
     /**
      * Each filter must implement a constructor that accepts configuration and mandatory FilterContext. Filters should
-     * not look up for configuration themselves, but PipelineManagers should pass it to them.
+     * not look up for configuration themselves, but a PipelineManager should pass it to them.
      *
      * @param FilterContext     $filterContext Mandatory filter context
      * @param array|object|null $parameters Parameters passed to filter in any expected form

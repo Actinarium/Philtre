@@ -8,11 +8,18 @@
 namespace Actinarium\Philtre\Core;
 
 use Actinarium\Philtre\Core\Exceptions\StoringDataException;
+use Actinarium\Philtre\Core\Exceptions\AcquiringDataException;
+use Actinarium\Philtre\Core\Exceptions\UnregisteredStreamException;
 
+/**
+ * The interface that declares core functionality of a context - basically a shareable storage for data for a filter.
+ *
+ * @package Actinarium\Philtre\Core
+ */
 interface FilterContext
 {
     /**
-     * Any FilterContext must implement this method so that Filters and PipelineManagers can use it to check whether
+     * Any FilterContext must implement this method so that Filters and PipelineManagers can use it to check whether the
      * stream with given ID exists. Should return true or false.
      *
      * @param string $streamId
@@ -22,9 +29,9 @@ interface FilterContext
     public function hasData($streamId);
 
     /**
-     * Any FilterContext must implement this method so that Filters and PipelineManagers can use it to put data into
+     * Any FilterContext must implement this method so that Filters and PipelineManagers can use it to put data into the
      * context. Implementation is frivolous. Method should not return anything, but rather throw
-     * {@link StoringDataException} in case of failure.
+     * {@link StoringDataException} or one of its sub-classes in case of failure.
      *
      * @param string $streamId
      * @param mixed  $data
@@ -35,12 +42,14 @@ interface FilterContext
     public function setData($streamId, $data);
 
     /**
-     * Any FilterContext must implement this method so that Filters and PipelineManagers can use it to get data from context.
-     * context. Implementation is frivolous.
+     * Any FilterContext must implement this method so that Filters and PipelineManagers can use it to get data from the
+     * context. Implementation is frivolous. In case data cannot be retrieved, the method should throw
+     * {@link AcquiringDataException} or one of its sub-classes.
      *
      * @param string $streamId
      *
      * @return mixed
+     * @throws AcquiringDataException
      */
     public function getData($streamId);
 }

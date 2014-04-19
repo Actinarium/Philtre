@@ -1,6 +1,6 @@
 {
     "filters" : {
-        "concat" : "\\Actinarium\\Philtre\\Impl\\Simple\\StringConcatFilter"
+        "concat" : "\\Actinarium\\Philtre\\Impl\\Filters\\StringConcatFilter"
     },
 
     "initStreams" : {

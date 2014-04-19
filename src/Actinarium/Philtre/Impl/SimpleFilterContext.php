@@ -7,13 +7,21 @@
  * @version GIT: $Id$
  */
 
-namespace Actinarium\Philtre\Core\Simple;
+namespace Actinarium\Philtre\Impl;
 
 
 use Actinarium\Philtre\Core\Exceptions\InvalidIdentifierException;
 use Actinarium\Philtre\Core\Exceptions\UnregisteredStreamException;
 use Actinarium\Philtre\Core\FilterContext;
 
+/**
+ * This filter context stores data unwrapped in a bag. This means, getting and setting data will follow the same rules
+ * as assignment in PHP: scalars will be copied, objects will be passed by reference. This kind of context is fitting
+ * for trivial processing chains because it's the simplest one, however you should remember the aforementioned if
+ * you plan on using it in your custom pipeline.
+ *
+ * @package Actinarium\Philtre\Impl
+ */
 class SimpleFilterContext implements FilterContext
 {
     /** @var mixed[] */

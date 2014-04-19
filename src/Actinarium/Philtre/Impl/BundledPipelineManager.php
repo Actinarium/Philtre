@@ -7,14 +7,15 @@
  * @version GIT: $Id$
  */
 
-namespace Actinarium\Philtre\Core\Simple;
+namespace Actinarium\Philtre\Impl;
 
 
 use Actinarium\Philtre\Core\Exceptions\InvalidIdentifierException;
 use Actinarium\Philtre\Core\Filter;
 use Actinarium\Philtre\Core\PipelineManager;
+use Actinarium\Philtre\Core\Simple\PromisingStreamedFilterContext;
 
-class SimplePipelineManager implements PipelineManager
+class BundledPipelineManager implements PipelineManager
 {
     /** @var object */
     private $configuration;

@@ -13,6 +13,13 @@ namespace Actinarium\Philtre\Core;
 interface PipelineManager
 {
     /**
+     * @todo write doc
+     * @param $configuration
+     */
+    public function __construct($configuration);
+
+    /**
+     * @todo fix doc
      * The only method every PipelineManager must implement. There are no rules on preconditions or output; what this
      * method must do is ensure that all filters operated as it was commanded to the PipelineManager.
      *

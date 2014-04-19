@@ -10,7 +10,8 @@
 require "../vendor/autoload.php";
 
 use Actinarium\Philtre\Core\Simple\PromisingStreamedFilterContext;
-use Actinarium\Philtre\Core\Simple\SimplePipelineManager;
+use Actinarium\Philtre\Core\Simple\ReferencePipelineManager;
+use Actinarium\Philtre\Impl\BundledPipelineManager;
 use Actinarium\Philtre\Impl\Simple\RegexReplaceFilter;
 
 /*// 1. Process data without manager
@@ -30,17 +31,17 @@ $filter2->process();
 
 echo $context2->getData("out");
 
-
+*/
 // 2. Process data with Pipeline Manager
 $config = json_decode(file_get_contents("test_config.json"));
-$manager = new SimplePipelineManager($config);
+$manager = new BundledPipelineManager($config);
 $result = $manager->process();
 
-var_dump($result);*/
+var_dump($result);
 
 // 3. Process data with manager 2
 $config = json_decode(file_get_contents("test_config_2.json"));
-$manager = new SimplePipelineManager($config);
+$manager = new BundledPipelineManager($config);
 $result = $manager->process();
 
 var_dump($result);

@@ -1,6 +1,6 @@
 {
     "filters" : {
-        "regexReplace" : "\\Actinarium\\Philtre\\Impl\\Simple\\RegexReplaceFilter"
+        "regexReplace" : "\\Actinarium\\Philtre\\Impl\\Filters\\RegexReplaceFilter"
     },
 
     "initStreams" : {
@@ -11,6 +11,8 @@
     "return" : {
         "output" : "OUT"
     },
+
+    "exchangeStrategy" : "deep-copy",
 
     "chain" : [
         {
@@ -28,7 +30,7 @@
             }
         },
         {
-            "filter"     : "\\Actinarium\\Philtre\\Impl\\Simple\\RegexReplaceFilter",
+            "filter"     : "\\Actinarium\\Philtre\\Impl\\Filters\\RegexReplaceFilter",
             "parameters" : {
                 "regex"       : "/d(?=!)/",
                 "replacement" : "tre"

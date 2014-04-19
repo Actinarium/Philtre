@@ -7,30 +7,28 @@
  * @version GIT: $Id$
  */
 
-namespace Actinarium\Philtre\Impl\Simple;
+namespace Actinarium\Philtre\Impl\Filters;
 
 use Actinarium\Philtre\Core\IO\DeclaringIO;
 use Actinarium\Philtre\Core\IO\Metadata\IODescriptor;
+use Actinarium\Philtre\Core\IO\Metadata\IODescriptorBuilder;
 use Actinarium\Philtre\Core\IO\Metadata\StreamDescriptor;
 use Actinarium\Philtre\Core\Simple\AbstractSimpleFilter;
 
 class RegexReplaceFilter extends AbstractSimpleFilter implements DeclaringIO {
 
-    private $ioDescriptor;
+    private static $ioDescriptor;
 
     public function getIODescriptor()
     {
-        if ($this->ioDescriptor == null) {
-            $this->ioDescriptor = new IODescriptor(
-                array(
-                    new StreamDescriptor("in", "string", "Input as one string")
-                ),
-                array(
-                    new StreamDescriptor("out", "string", "Output as one string")
-                )
-            );
+        if (self::$ioDescriptor == null) {
+            $builder = new IODescriptorBuilder();
+            self::$ioDescriptor = $builder
+                ->requires()->id('in')->type('string')->description('Input string')
+                ->exports()->id('out')->type('string')->description('Output string')
+                ->get();
         }
-        return $this->ioDescriptor;
+        return self::$ioDescriptor;
     }
 
     public function process()
