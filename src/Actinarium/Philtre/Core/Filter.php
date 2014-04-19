@@ -18,7 +18,7 @@ interface Filter
 {
     /**
      * Each filter must implement a constructor that accepts configuration and mandatory FilterContext. Filters should
-     * not look up for configuration themselves, but a PipelineManager should pass it to them.
+     * not look up for configuration themselves, but a ExecutionManager should pass it to them.
      *
      * @param FilterContext     $filterContext Mandatory filter context
      * @param array|object|null $parameters Parameters passed to filter in any expected form
@@ -30,7 +30,7 @@ interface Filter
     /**
      * This method should contain the logic that reads data from context, processes, and puts data back to context.
      * For I/O it should use provided context rather than accept or return anything, however this is not forbidden,
-     * especially for custom PipelineManager implementations. In case of failure the method should throw
+     * especially for custom ExecutionManager implementations. In case of failure the method should throw
      * {@link FilterProcessingException}.
      *
      * @return void|mixed

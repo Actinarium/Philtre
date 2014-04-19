@@ -9,10 +9,10 @@ namespace Actinarium\Philtre\Impl;
 
 
 use Actinarium\Philtre\Core\Filter;
-use Actinarium\Philtre\Core\PipelineManager;
+use Actinarium\Philtre\Core\ExecutionManager;
 use InvalidArgumentException;
 
-class BundledPipelineManager implements PipelineManager
+class BundledPipeline implements ExecutionManager
 {
     /** @var object */
     private $configuration;

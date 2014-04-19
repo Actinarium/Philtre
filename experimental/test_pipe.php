@@ -8,7 +8,7 @@
 /** @noinspection PhpIncludeInspection */
 require "../vendor/autoload.php";
 
-use Actinarium\Philtre\Impl\BundledPipelineManager;
+use Actinarium\Philtre\Impl\BundledPipeline;
 
 /*// 1. Process data without manager
 $inputString = "Hello World!";
@@ -30,14 +30,14 @@ echo $context2->getData("out");
 */
 // 2. Process data with Pipeline Manager
 $config = json_decode(file_get_contents("test_config.json"));
-$manager = new BundledPipelineManager($config);
+$manager = new BundledPipeline($config);
 $result = $manager->process();
 
 var_dump($result);
 
 // 3. Process data with manager 2
 $config = json_decode(file_get_contents("test_config_2.json"));
-$manager = new BundledPipelineManager($config);
+$manager = new BundledPipeline($config);
 $result = $manager->process();
 
 var_dump($result);
