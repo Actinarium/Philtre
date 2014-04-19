@@ -1,6 +1,6 @@
 <?php
 /**
- * @author pdanyliuk
+ * @author  Actine <actine@actinarium.com>
  * Date: 06.03.14
  * Time: 1:08
  */
@@ -27,7 +27,7 @@ class IODescriptor
      * @param StreamDescriptor[] $exports  New streams that the filter produces
      * @param StreamDescriptor[] $uses     Streams that the filter may use for both input and output, i.e. alter data
      */
-    function __construct(array $requires, array $exports, array $uses)
+    public function __construct(array $requires, array $exports, array $uses)
     {
         $this->requiredStreams = $requires;
         $this->exportedStreams = $exports;
@@ -49,4 +49,4 @@ class IODescriptor
     {
         return $this->exportedStreams;
     }
-} 
+}

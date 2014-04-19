@@ -15,7 +15,7 @@ use Actinarium\Philtre\Core\IO\Metadata\IODescriptor;
  * Declares {@link getIODescriptor()} method, which should be implemented by Filters and Contexts that want to notify
  * their superiors (Contexts and PipelineManagers respectively) about IO consumption.
  *
- * @package Actinarium\Philtre\Core
+ * @package Actinarium\Philtre\Core\IO
  */
 interface DeclaringIO
 {
@@ -25,4 +25,4 @@ interface DeclaringIO
      * @return IODescriptor valid descriptor with streams metadata
      */
     public function getIODescriptor();
-} 
+}

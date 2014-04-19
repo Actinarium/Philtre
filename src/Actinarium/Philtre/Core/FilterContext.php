@@ -1,6 +1,6 @@
 <?php
 /**
- * @author pdanyliuk
+ * @author  Actine <actine@actinarium.com>
  * Date: 06.03.14
  * Time: 0:56
  */
@@ -9,7 +9,6 @@ namespace Actinarium\Philtre\Core;
 
 use Actinarium\Philtre\Core\Exceptions\StoringDataException;
 use Actinarium\Philtre\Core\Exceptions\AcquiringDataException;
-use Actinarium\Philtre\Core\Exceptions\UnregisteredStreamException;
 
 /**
  * The interface that declares core functionality of a context - basically a shareable storage for data for a filter.

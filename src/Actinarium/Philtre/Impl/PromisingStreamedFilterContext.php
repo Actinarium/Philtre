@@ -7,12 +7,12 @@
  * @version GIT: $Id$
  */
 
-namespace Actinarium\Philtre\Core\Simple;
+namespace Actinarium\Philtre\Impl;
 
 
-use Actinarium\Philtre\Core\Exceptions\InvalidIdentifierException;
 use Actinarium\Philtre\Core\FilterContext;
 use Actinarium\Philtre\Core\IO\MutableStream;
+use InvalidArgumentException;
 
 class PromisingStreamedFilterContext implements FilterContext
 {
@@ -25,7 +25,7 @@ class PromisingStreamedFilterContext implements FilterContext
     public function hasData($streamId)
     {
         if (!is_string($streamId)) {
-            throw new InvalidIdentifierException("Non-string entity was provided as stream ID");
+            throw new InvalidArgumentException("Non-string entity was provided as stream ID");
         }
         return array_key_exists($streamId, $this->streamsBag);
     }
@@ -36,7 +36,7 @@ class PromisingStreamedFilterContext implements FilterContext
     public function setData($streamId, $data)
     {
         if (!is_string($streamId)) {
-            throw new InvalidIdentifierException("Non-string entity was provided as stream ID");
+            throw new InvalidArgumentException("Non-string entity was provided as stream ID");
         }
         $this->getStream($streamId)->setData($data);
     }
@@ -47,7 +47,7 @@ class PromisingStreamedFilterContext implements FilterContext
     public function getData($streamId)
     {
         if (!is_string($streamId)) {
-            throw new InvalidIdentifierException("Non-string entity was provided as stream ID");
+            throw new InvalidArgumentException("Non-string entity was provided as stream ID");
         }
         return $this->getStream($streamId)->getData();
     }
@@ -58,12 +58,12 @@ class PromisingStreamedFilterContext implements FilterContext
      * @param               $streamId
      * @param MutableStream $stream
      *
-     * @throws \Actinarium\Philtre\Core\Exceptions\InvalidIdentifierException
+     * @throws \InvalidArgumentException
      */
     public function setStream($streamId, MutableStream $stream)
     {
         if (!is_string($streamId)) {
-            throw new InvalidIdentifierException("Non-string entity was provided as stream ID");
+            throw new InvalidArgumentException("Non-string entity was provided as stream ID");
         }
         $this->streamsBag[$streamId] = $stream;
     }
@@ -74,13 +74,12 @@ class PromisingStreamedFilterContext implements FilterContext
      * @param $streamId
      *
      * @return MutableStream
-     * @throws \Actinarium\Philtre\Core\Exceptions\InvalidIdentifierException
-     * @throws \Actinarium\Philtre\Core\Exceptions\UnregisteredStreamException
+     * @throws \InvalidArgumentException
      */
     public function getStream($streamId)
     {
         if (!is_string($streamId)) {
-            throw new InvalidIdentifierException("Non-string entity was provided as stream ID");
+            throw new InvalidArgumentException("Non-string entity was provided as stream ID");
         }
         if (!$this->hasData($streamId)) {
             $this->streamsBag[$streamId] = new MutableStream(null);

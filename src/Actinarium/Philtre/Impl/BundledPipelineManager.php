@@ -10,10 +10,9 @@
 namespace Actinarium\Philtre\Impl;
 
 
-use Actinarium\Philtre\Core\Exceptions\InvalidIdentifierException;
 use Actinarium\Philtre\Core\Filter;
 use Actinarium\Philtre\Core\PipelineManager;
-use Actinarium\Philtre\Core\Simple\PromisingStreamedFilterContext;
+use InvalidArgumentException;
 
 class BundledPipelineManager implements PipelineManager
 {
@@ -30,8 +29,8 @@ class BundledPipelineManager implements PipelineManager
     }
 
     /**
+     * @throws InvalidArgumentException
      * @return string|string[]|null
-     * @throws \Actinarium\Philtre\Core\Exceptions\InvalidIdentifierException
      */
     public function process()
     {
@@ -47,7 +46,7 @@ class BundledPipelineManager implements PipelineManager
 
         // Extract filters map from configuration
         if (isset($this->configuration->filters) && is_object($this->configuration->filters)) {
-            $filterClassMap = (array) $this->configuration->filters;
+            $filterClassMap = (array)$this->configuration->filters;
         } else {
             $filterClassMap = array();
         }
@@ -85,7 +84,7 @@ class BundledPipelineManager implements PipelineManager
                     }
                     $filterObject = new $filterClassName($filterContext, $filter->parameters);
                 } else {
-                    throw new InvalidIdentifierException("One of filters doesn't have 'filter' field set properly");
+                    throw new InvalidArgumentException("One of filters doesn't have 'filter' field set properly");
                 }
 
                 // Add the filter to execution queue
@@ -126,7 +125,8 @@ class BundledPipelineManager implements PipelineManager
         $this->namedContextsBag = array();
     }
 
-    private function requireNamedContext(&$id) {
+    private function requireNamedContext(&$id)
+    {
         if (!array_key_exists($id, $this->namedContextsBag)) {
             $this->namedContextsBag[$id] = new PromisingStreamedFilterContext();
         }

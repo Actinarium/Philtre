@@ -1,16 +1,19 @@
 <?php
 /**
- * @author pdanyliuk
+ * @author  Actine <actine@actinarium.com>
  * Date: 06.03.14
  * Time: 0:58
  */
 
 namespace Actinarium\Philtre\Core\IO\Metadata;
 
-
-use Actinarium\Philtre\Core\Exceptions\IncompleteStreamDescriptorException;
 use InvalidArgumentException;
 
+/**
+ * Immutable object that describes one stream used by a filter.
+ *
+ * @package Actinarium\Philtre\Core\IO\Metadata
+ */
 class StreamDescriptor
 {
     /** @var string */
@@ -29,7 +32,7 @@ class StreamDescriptor
      *
      * @throws \InvalidArgumentException if streamId or types is missing or invalid, or description is not string.
      */
-    function __construct($streamId, $types, $description = null)
+    public function __construct($streamId, $types, $description = null)
     {
         if (empty($streamId) || empty($types) || !is_string($streamId) || !(is_array($types) || is_string($types))) {
             throw new InvalidArgumentException('streamId and types are invalid or empty');

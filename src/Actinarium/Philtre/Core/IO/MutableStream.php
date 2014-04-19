@@ -20,4 +20,4 @@ class MutableStream extends Stream
     {
         return $this->data = $data;
     }
-} 
+}

@@ -7,17 +7,15 @@
  * @version GIT: $Id$
  */
 
-namespace Actinarium\Philtre\Core\Simple;
+namespace Actinarium\Philtre\Core;
 
 
-use Actinarium\Philtre\Core\Exceptions\InvalidIdentifierException;
-use Actinarium\Philtre\Core\Filter;
-use Actinarium\Philtre\Core\FilterContext;
+use InvalidArgumentException;
 
 /**
  * Extend this class to build simple filters
  *
- * @package Actinarium\Philtre\Impl\Simple
+ * @package Actinarium\Philtre\Core
  */
 abstract class AbstractSimpleFilter implements Filter
 {
@@ -49,7 +47,7 @@ abstract class AbstractSimpleFilter implements Filter
     protected function getParameter($name)
     {
         if (!is_string($name)) {
-            throw new InvalidIdentifierException("Non-string was provided as parameter name");
+            throw new InvalidArgumentException("Non-string was provided as parameter name");
         }
 
         if (is_array($this->parameters) && array_key_exists($name, $this->parameters)) {

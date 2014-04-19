@@ -1,6 +1,6 @@
 <?php
 /**
- * @author Actine <actine@actinarium.com>
+ * @author  Actine <actine@actinarium.com>
  * Date: 19.04.14
  * Time: 17:57
  *
@@ -14,7 +14,8 @@ namespace Actinarium\Philtre\Core\IO\Metadata;
  *
  * @package Actinarium\Philtre\Core\IO\Metadata
  */
-class IODescriptorBuilder {
+class IODescriptorBuilder
+{
 
     /** @var StreamDescriptor[] */
     protected $requiredStreams = array();
@@ -25,37 +26,44 @@ class IODescriptorBuilder {
 
     private $temp;
 
-    public function requires($streamId = null, $types = array(), $description = null) {
+    public function requires($streamId = null, $types = array(), $description = null)
+    {
         $this->pushToTemp('require', $streamId, $types, $description);
         return $this;
     }
 
-    public function exports($streamId = null, $types = array(), $description = null) {
+    public function exports($streamId = null, $types = array(), $description = null)
+    {
         $this->pushToTemp('export', $streamId, $types, $description);
         return $this;
     }
 
-    public function uses($streamId = null, $types = array(), $description = null) {
+    public function uses($streamId = null, $types = array(), $description = null)
+    {
         $this->pushToTemp('use', $streamId, $types, $description);
         return $this;
     }
 
-    public function id($streamId) {
+    public function id($streamId)
+    {
         $this->pushToTemp(null, $streamId);
         return $this;
     }
 
-    public function type($type) {
+    public function type($type)
+    {
         $this->pushToTemp(null, null, $type);
         return $this;
     }
 
-    public function description($description) {
+    public function description($description)
+    {
         $this->pushToTemp(null, null, null, $description);
         return $this;
     }
 
-    public function get() {
+    public function get()
+    {
         if ($this->temp !== null) {
             $this->pushTempToAppropriateList();
         }
@@ -66,13 +74,16 @@ class IODescriptorBuilder {
         );
     }
 
-    private function pushToTemp($type = null, $streamId = null, $types = null, $description = null) {
+    private function pushToTemp($type = null, $streamId = null, $types = null, $description = null)
+    {
         if ($this->temp === null) {
             // very first call. Must be one of the "starting" methods to define where the descriptor should be stored
             if ($type === null) {
-                throw new \LogicException('You should use requires(), exports() or uses() prior to supplying descriptor parameters');
+                throw new \LogicException(
+                    'You should use requires(), exports() or uses() prior to supplying descriptor parameters'
+                );
             } else {
-                $this->temp = array('type' => $type, 'streamId' => $streamId, 'types' => $types,
+                $this->temp = array('type'        => $type, 'streamId' => $streamId, 'types' => $types,
                                     'description' => $description);
                 return;
             }
@@ -99,23 +110,24 @@ class IODescriptorBuilder {
         }
     }
 
-    private function pushTempToAppropriateList() {
+    private function pushTempToAppropriateList()
+    {
         switch ($this->temp->type) {
-            case 'require' :
+            case 'require':
                 $this->requiredStreams[] = new StreamDescriptor(
                     $this->temp['streamId'],
                     $this->temp['types'],
                     $this->temp['description']
                 );
                 break;
-            case 'export' :
+            case 'export':
                 $this->exportedStreams[] = new StreamDescriptor(
                     $this->temp['streamId'],
                     $this->temp['types'],
                     $this->temp['description']
                 );
                 break;
-            case 'use' :
+            case 'use':
                 $this->usedStreams[] = new StreamDescriptor(
                     $this->temp['streamId'],
                     $this->temp['types'],
@@ -124,5 +136,4 @@ class IODescriptorBuilder {
                 break;
         }
     }
-
-} 
+}

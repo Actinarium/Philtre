@@ -5,14 +5,12 @@
  * Time: 17:51
  *
  * @version GIT: $Id$
- */ 
+ */
 
+/** @noinspection PhpIncludeInspection */
 require "../vendor/autoload.php";
 
-use Actinarium\Philtre\Core\Simple\PromisingStreamedFilterContext;
-use Actinarium\Philtre\Core\Simple\ReferencePipelineManager;
 use Actinarium\Philtre\Impl\BundledPipelineManager;
-use Actinarium\Philtre\Impl\Simple\RegexReplaceFilter;
 
 /*// 1. Process data without manager
 $inputString = "Hello World!";

@@ -1,6 +1,6 @@
 <?php
 /**
- * @author Actine <actine@actinarium.com>
+ * @author  Actine <actine@actinarium.com>
  * Date: 13.04.14
  * Time: 17:58
  *
@@ -10,12 +10,11 @@
 namespace Actinarium\Philtre\Impl\Filters;
 
 use Actinarium\Philtre\Core\IO\DeclaringIO;
-use Actinarium\Philtre\Core\IO\Metadata\IODescriptor;
 use Actinarium\Philtre\Core\IO\Metadata\IODescriptorBuilder;
-use Actinarium\Philtre\Core\IO\Metadata\StreamDescriptor;
-use Actinarium\Philtre\Core\Simple\AbstractSimpleFilter;
+use Actinarium\Philtre\Core\AbstractSimpleFilter;
 
-class RegexReplaceFilter extends AbstractSimpleFilter implements DeclaringIO {
+class RegexReplaceFilter extends AbstractSimpleFilter implements DeclaringIO
+{
 
     private static $ioDescriptor;
 

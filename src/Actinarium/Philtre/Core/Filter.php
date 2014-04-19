@@ -1,6 +1,6 @@
 <?php
 /**
- * @author pdanyliuk
+ * @author  Actine <actine@actinarium.com>
  * Date: 06.03.14
  * Time: 0:53
  */
@@ -32,4 +32,4 @@ interface Filter
      * @throws FilterProcessingException
      */
     public function process();
-} 
+}

@@ -10,11 +10,11 @@
 namespace Actinarium\Philtre\Impl;
 
 
-use Actinarium\Philtre\Core\Exceptions\InvalidIdentifierException;
 use Actinarium\Philtre\Core\Exceptions\UnregisteredStreamException;
 use Actinarium\Philtre\Core\FilterContext;
 use Actinarium\Philtre\Core\IO\Stream;
 use Actinarium\Philtre\Core\StreamOperatingFilterContext;
+use InvalidArgumentException;
 
 class StreamedFilterContext implements FilterContext, StreamOperatingFilterContext
 {
@@ -27,7 +27,7 @@ class StreamedFilterContext implements FilterContext, StreamOperatingFilterConte
     public function hasData($streamId)
     {
         if (!is_string($streamId)) {
-            throw new InvalidIdentifierException("Non-string entity was provided as stream ID");
+            throw new InvalidArgumentException("Non-string entity was provided as stream ID");
         }
         return array_key_exists($streamId, $this->streamsBag);
     }
@@ -38,7 +38,7 @@ class StreamedFilterContext implements FilterContext, StreamOperatingFilterConte
     public function setData($streamId, $data)
     {
         if (!is_string($streamId)) {
-            throw new InvalidIdentifierException("Non-string entity was provided as stream ID");
+            throw new InvalidArgumentException("Non-string entity was provided as stream ID");
         }
         $this->streamsBag[$streamId] = new Stream($data);
     }
@@ -49,7 +49,7 @@ class StreamedFilterContext implements FilterContext, StreamOperatingFilterConte
     public function getData($streamId)
     {
         if (!is_string($streamId)) {
-            throw new InvalidIdentifierException("Non-string entity was provided as stream ID");
+            throw new InvalidArgumentException("Non-string entity was provided as stream ID");
         }
         if ($this->hasData($streamId)) {
             return $this->streamsBag[$streamId]->getData();
@@ -64,11 +64,12 @@ class StreamedFilterContext implements FilterContext, StreamOperatingFilterConte
      * @param        $streamId
      * @param Stream $stream
      *
-     * @throws \Actinarium\Philtre\Core\Exceptions\InvalidIdentifierException
+     * @throws \InvalidArgumentException
      */
-    public function setStream($streamId, Stream $stream) {
+    public function setStream($streamId, Stream $stream)
+    {
         if (!is_string($streamId)) {
-            throw new InvalidIdentifierException("Non-string entity was provided as stream ID");
+            throw new InvalidArgumentException("Non-string entity was provided as stream ID");
         }
         $this->streamsBag[$streamId] = $stream;
     }
@@ -78,13 +79,14 @@ class StreamedFilterContext implements FilterContext, StreamOperatingFilterConte
      *
      * @param $streamId
      *
-     * @return ImmutableStream
-     * @throws \Actinarium\Philtre\Core\Exceptions\InvalidIdentifierException
+     * @throws \InvalidArgumentException
      * @throws \Actinarium\Philtre\Core\Exceptions\UnregisteredStreamException
+     * @return Stream
      */
-    public function getStream($streamId) {
+    public function getStream($streamId)
+    {
         if (!is_string($streamId)) {
-            throw new InvalidIdentifierException("Non-string entity was provided as stream ID");
+            throw new InvalidArgumentException("Non-string entity was provided as stream ID");
         }
         if ($this->hasData($streamId)) {
             return $this->streamsBag[$streamId];
