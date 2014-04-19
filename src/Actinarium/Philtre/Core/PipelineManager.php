@@ -9,21 +9,25 @@
 
 namespace Actinarium\Philtre\Core;
 
-
+/**
+ * Pipeline Manager interface, introduced to let users create their own implementations and pass them by interface to
+ * their applications
+ *
+ * @package Actinarium\Philtre\Core
+ */
 interface PipelineManager
 {
     /**
-     * @todo write doc
-     * @param $configuration
+     * @param mixed|null $configuration Optional configuration
      */
-    public function __construct($configuration);
+    public function __construct($configuration = null);
 
     /**
-     * @todo fix doc
-     * The only method every PipelineManager must implement. There are no rules on preconditions or output; what this
-     * method must do is ensure that all filters operated as it was commanded to the PipelineManager.
+     * The method that handles data processing (potentially including validation, initialization, invoking process()
+     * methods on filters and optionally returning processing results). There are no rules on preconditions or output -
+     * what this method must do is ensure that all filters operated as it was commanded to the PipelineManager.
      *
-     * @return void|mixed
+     * @return void|mixed Calculation result, if configured so
      */
     public function process();
 }

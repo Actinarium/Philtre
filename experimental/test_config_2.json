@@ -10,6 +10,8 @@
 
     "return" : ["IN1", "IN2", "OUT"],
 
+    "exchangeStrategy" : "deep-copy",
+
     "chain" : [
         {
             "filter"   : "concat",
