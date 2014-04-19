@@ -3,8 +3,6 @@
  * @author  Actine <actine@actinarium.com>
  * Date: 13.04.14
  * Time: 3:03
- *
- * @version GIT: $Id$
  */
 
 namespace Actinarium\Philtre\Impl;
@@ -12,7 +10,7 @@ namespace Actinarium\Philtre\Impl;
 
 use Actinarium\Philtre\Core\Exceptions\UnregisteredStreamException;
 use Actinarium\Philtre\Core\FilterContext;
-use Actinarium\Philtre\Core\IO\Stream;
+use Actinarium\Philtre\Core\IO\Streams\Stream;
 use Actinarium\Philtre\Core\StreamOperatingFilterContext;
 use InvalidArgumentException;
 
@@ -24,7 +22,7 @@ class StreamedFilterContext implements FilterContext, StreamOperatingFilterConte
     /**
      * @inheritdoc
      */
-    public function hasData($streamId)
+    public function isRegistered($streamId)
     {
         if (!is_string($streamId)) {
             throw new InvalidArgumentException("Non-string entity was provided as stream ID");
@@ -51,7 +49,7 @@ class StreamedFilterContext implements FilterContext, StreamOperatingFilterConte
         if (!is_string($streamId)) {
             throw new InvalidArgumentException("Non-string entity was provided as stream ID");
         }
-        if ($this->hasData($streamId)) {
+        if ($this->isRegistered($streamId)) {
             return $this->streamsBag[$streamId]->getData();
         } else {
             throw new UnregisteredStreamException("Requested unregistered stream");
@@ -64,6 +62,7 @@ class StreamedFilterContext implements FilterContext, StreamOperatingFilterConte
      * @param        $streamId
      * @param Stream $stream
      *
+     * @return void
      * @throws \InvalidArgumentException
      */
     public function setStream($streamId, Stream $stream)
@@ -88,7 +87,7 @@ class StreamedFilterContext implements FilterContext, StreamOperatingFilterConte
         if (!is_string($streamId)) {
             throw new InvalidArgumentException("Non-string entity was provided as stream ID");
         }
-        if ($this->hasData($streamId)) {
+        if ($this->isRegistered($streamId)) {
             return $this->streamsBag[$streamId];
         } else {
             throw new UnregisteredStreamException("Requested unregistered stream");

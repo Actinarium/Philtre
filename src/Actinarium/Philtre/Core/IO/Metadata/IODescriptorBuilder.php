@@ -3,8 +3,6 @@
  * @author  Actine <actine@actinarium.com>
  * Date: 19.04.14
  * Time: 17:57
- *
- * @version GIT: $Id$
  */
 
 namespace Actinarium\Philtre\Core\IO\Metadata;

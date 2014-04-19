@@ -3,26 +3,24 @@
  * @author  Actine <actine@actinarium.com>
  * Date: 13.04.14
  * Time: 3:03
- *
- * @version GIT: $Id$
  */
 
 namespace Actinarium\Philtre\Impl;
 
 
 use Actinarium\Philtre\Core\FilterContext;
-use Actinarium\Philtre\Core\IO\MutableStream;
+use Actinarium\Philtre\Core\IO\Streams\MutableStream;
 use InvalidArgumentException;
 
 class PromisingStreamedFilterContext implements FilterContext
 {
-    /** @var MutableStream[] */
+    /** @var \Actinarium\Philtre\Core\IO\Streams\MutableStream[] */
     protected $streamsBag = array();
 
     /**
      * @inheritdoc
      */
-    public function hasData($streamId)
+    public function isRegistered($streamId)
     {
         if (!is_string($streamId)) {
             throw new InvalidArgumentException("Non-string entity was provided as stream ID");
@@ -81,7 +79,7 @@ class PromisingStreamedFilterContext implements FilterContext
         if (!is_string($streamId)) {
             throw new InvalidArgumentException("Non-string entity was provided as stream ID");
         }
-        if (!$this->hasData($streamId)) {
+        if (!$this->isRegistered($streamId)) {
             $this->streamsBag[$streamId] = new MutableStream(null);
         }
         return $this->streamsBag[$streamId];

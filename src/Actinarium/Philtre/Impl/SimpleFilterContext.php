@@ -3,8 +3,6 @@
  * @author  Actine <actine@actinarium.com>
  * Date: 13.04.14
  * Time: 3:03
- *
- * @version GIT: $Id$
  */
 
 namespace Actinarium\Philtre\Impl;
@@ -30,7 +28,7 @@ class SimpleFilterContext implements FilterContext
     /**
      * @inheritdoc
      */
-    public function hasData($streamId)
+    public function isRegistered($streamId)
     {
         if (!is_string($streamId)) {
             throw new InvalidArgumentException("Non-string entity was provided as stream ID");
@@ -57,7 +55,7 @@ class SimpleFilterContext implements FilterContext
         if (!is_string($streamId)) {
             throw new InvalidArgumentException("Non-string entity was provided as stream ID");
         }
-        if ($this->hasData($streamId)) {
+        if ($this->isRegistered($streamId)) {
             return $this->dataBag[$streamId];
         } else {
             throw new UnregisteredStreamException("Requested unregistered stream");

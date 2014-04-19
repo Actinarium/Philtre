@@ -3,8 +3,6 @@
  * @author  Actine <actine@actinarium.com>
  * Date: 13.04.14
  * Time: 2:58
- *
- * @version GIT: $Id$
  */
 
 namespace Actinarium\Philtre\Core;
@@ -13,13 +11,13 @@ namespace Actinarium\Philtre\Core;
 use InvalidArgumentException;
 
 /**
- * Extend this class to build simple filters
+ * Abstract class containing some boilerplate required for simple filters (those that exchange concrete data, as opposed
+ * to 'promising' filters that work in reverse order and are not implemented in this library yet).
  *
  * @package Actinarium\Philtre\Core
  */
 abstract class AbstractSimpleFilter implements Filter
 {
-
     /** @var FilterContext */
     private $filterContext;
     /** @var array|object|null */

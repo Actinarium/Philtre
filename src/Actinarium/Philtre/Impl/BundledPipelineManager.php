@@ -3,8 +3,6 @@
  * @author  Actine <actine@actinarium.com>
  * Date: 13.04.14
  * Time: 21:35
- *
- * @version GIT: $Id$
  */
 
 namespace Actinarium\Philtre\Impl;

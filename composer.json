@@ -1,6 +1,6 @@
 {
     "name"              : "Actinarium/Philtre",
-    "description"       : "A simple solution to build configurable processing chains with filters and streams.",
+    "description"       : "A simple solution for building configurable processing chains with filters and streams.",
     "minimum-stability" : "dev",
     "license"           : "BSD-3-Clause",
     "authors"           : [

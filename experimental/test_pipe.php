@@ -3,8 +3,6 @@
  * @author Actine <actine@actinarium.com>
  * Date: 13.04.14
  * Time: 17:51
- *
- * @version GIT: $Id$
  */
 
 /** @noinspection PhpIncludeInspection */

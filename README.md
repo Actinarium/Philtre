@@ -1,10 +1,31 @@
 Philtre
 =======
 
-Philtre is a minimalistic library for various Pipe & Filters scenarios.
+Overview
+--------
 
-Currently it's early in development, therefore the only supported scenario is an unchecked pipe with sequential
-execution.
+Philtre is a simple solution for building configurable processing chains with filters and streams.
+
+The idea behind Philtre is:
+
+- to be able to perform data processing, from start to completeness, in a non-hardcoded way (i.e. so that instructions
+on how to perform all processing from getting initial data to storing processed data could be declared in editable
+configuration rather than source code);
+- to be like a pipe, but be able to use as many inputs/outputs as required;
+- to be atomary enough (one Filter does one action) for better reusage;
+- to be extensible.
+
+I did not find any fitting solutions, therefore implemented one myself.
+
+Currently it's early in development, therefore don't expect it to do much or to have good documentation (although I try
+to write meaningful docblocks).
+
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/b/Actine/philtre/badges/quality-score.png?s=d743db2f7a0e805573c62ba58acf195df32c4e09)](https://scrutinizer-ci.com/b/Actine/philtre/)
+
+License
+-------
+
+This library is licensed under [BSD 3-Clause license](http://opensource.org/licenses/BSD-3-Clause).
 
 Philtre's architecture
 ----------------------

@@ -9,6 +9,11 @@ namespace Actinarium\Philtre\Core;
 
 use Actinarium\Philtre\Core\Exceptions\FilterProcessingException;
 
+/**
+ * The interface every filter must implement to conform with architecture rules.
+ *
+ * @package Actinarium\Philtre\Core
+ */
 interface Filter
 {
     /**

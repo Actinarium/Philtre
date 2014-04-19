@@ -25,7 +25,7 @@ interface FilterContext
      *
      * @return boolean
      */
-    public function hasData($streamId);
+    public function isRegistered($streamId);
 
     /**
      * Any FilterContext must implement this method so that Filters and PipelineManagers can use it to put data into the
