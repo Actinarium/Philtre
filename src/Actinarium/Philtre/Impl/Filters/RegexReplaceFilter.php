@@ -20,8 +20,8 @@ class RegexReplaceFilter extends AbstractSimpleFilter implements DeclaringIO
         if (self::$ioDescriptor == null) {
             $builder = new IODescriptorBuilder();
             self::$ioDescriptor = $builder
-                ->requires()->id('in')->type('string')->description('Input string')
-                ->exports()->id('out')->type('string')->description('Output string')
+                ->requires()->streamId('in')->type('string')->description('Input string')
+                ->exports()->streamId('out')->type('string')->description('Output string')
                 ->get();
         }
         return self::$ioDescriptor;

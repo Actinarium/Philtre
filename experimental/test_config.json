@@ -12,8 +12,6 @@
         "output" : "OUT"
     },
 
-    "exchangeStrategy" : "deep-copy",
-
     "chain" : [
         {
             "filter"     : "regexReplace",

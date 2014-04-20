@@ -21,9 +21,9 @@ class StringConcatFilter extends AbstractSimpleFilter implements DeclaringIO
         if (self::$ioDescriptor == null) {
             $builder = new IODescriptorBuilder();
             self::$ioDescriptor = $builder
-                ->requires()->id('in1')->type('string')->description('First input string')
-                ->requires()->id('in2')->type('string')->description('Second input string')
-                ->exports()->id('out')->type('string')->description('Output string')
+                ->requires()->streamId('in1')->type('string')->description('First input string')
+                ->requires()->streamId('in2')->type('string')->description('Second input string')
+                ->exports()->streamId('out')->type('string')->description('Output string')
                 ->get();
         }
         return self::$ioDescriptor;

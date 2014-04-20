@@ -33,12 +33,13 @@ class BundledPipeline implements ExecutionManager
     public function __construct($configuration)
     {
         $this->configuration = $configuration;
+        $this->objectizeConfig();
         $this->populateFiltersMap();
     }
 
     /**
      * @throws InvalidArgumentException
-     * @return string|string[]|null
+     * @return mixed|null
      */
     public function process()
     {
@@ -96,7 +97,7 @@ class BundledPipeline implements ExecutionManager
 
     private function fillInitialData()
     {
-        if (self::isIterable($this->configuration->initStreams)) {
+        if (is_object($this->configuration->initStreams)) {
             foreach ($this->configuration->initStreams as $streamId => $data) {
                 $this->streamHolder->setData($streamId, $data);
             }
@@ -105,7 +106,7 @@ class BundledPipeline implements ExecutionManager
 
     private function populateFiltersMap()
     {
-        if (self::isIterable($this->configuration->filters)) {
+        if (is_object($this->configuration->filters)) {
             $this->filterClassMap = (array)$this->configuration->filters;
         } else {
             $this->filterClassMap = array();
@@ -123,7 +124,7 @@ class BundledPipeline implements ExecutionManager
     }
 
     /**
-     * @param               $filter
+     * @param object        $filter
      * @param FilterContext $filterContext
      *
      * @return Filter
@@ -146,7 +147,7 @@ class BundledPipeline implements ExecutionManager
 
     private function injectRequiredStreams($filter, StreamOperatingFilterContext $filterContext)
     {
-        if (self::isIterable($filter->requires)) {
+        if (is_object($filter->requires)) {
             foreach ($filter->requires as $innerId => $outerId) {
                 $filterContext->setStream($innerId, $this->streamHolder->getStream($outerId));
             }
@@ -155,7 +156,7 @@ class BundledPipeline implements ExecutionManager
 
     private function extractExportedStreams($filter, StreamOperatingFilterContext $filterContext)
     {
-        if (self::isIterable($filter->exports)) {
+        if (is_object($filter->exports)) {
             foreach ($filter->exports as $innerId => $outerId) {
                 $this->streamHolder->setStream($outerId, $filterContext->getStream($innerId));
             }
@@ -166,22 +167,22 @@ class BundledPipeline implements ExecutionManager
     {
         if (is_string($this->configuration->return)) {
             return 1;
-        } elseif (self::isIterable($this->configuration->return)) {
-            return 3;
         } elseif (is_array($this->configuration->return)) {
             return 2;
+        } elseif (is_object($this->configuration->return)) {
+            return 3;
         } else {
             return 0;
         }
     }
 
-    private static function isIterable(&$var)
+    /**
+     * A dirty method to convert provided configuration into expected format
+     */
+    private function objectizeConfig()
     {
-        return isset($var) && (is_object($var) || (self::isAssoc($var)));
-    }
-
-    private static function isAssoc(&$var)
-    {
-        return is_array($var) && count(array_filter(array_keys($var))) === count($var);
+        if (is_array($this->configuration)) {
+            $this->configuration = json_decode(json_encode($this->configuration));
+        }
     }
 }

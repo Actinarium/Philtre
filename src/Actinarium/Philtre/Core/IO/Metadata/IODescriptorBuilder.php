@@ -42,7 +42,7 @@ class IODescriptorBuilder
         return $this;
     }
 
-    public function id($streamId)
+    public function streamId($streamId)
     {
         $this->pushToTemp(null, $streamId);
         return $this;
@@ -94,7 +94,9 @@ class IODescriptorBuilder
                 if (is_string($types)) {
                     $this->temp['types'][] = $types;
                 } elseif (is_array($types)) {
-                    $this->temp['types'] = $types;
+                    foreach ($types as $t) {
+                        $this->temp['types'][] = $t;
+                    }
                 }
             }
             if ($description !== null) {
@@ -111,7 +113,7 @@ class IODescriptorBuilder
     private function pushTempToAppropriateList()
     {
         $streamDesc = new StreamDescriptor($this->temp['streamId'], $this->temp['types'], $this->temp['description']);
-        switch ($this->temp->type) {
+        switch ($this->temp['type']) {
             case 'require':
                 $this->requiredStreams[] = $streamDesc;
                 break;
