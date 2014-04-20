@@ -1,5 +1,5 @@
 {
-    "name"              : "Actinarium/Philtre",
+    "name"              : "actinarium/philtre",
     "description"       : "A simple solution for building configurable processing chains with filters and streams.",
     "minimum-stability" : "dev",
     "license"           : "BSD-3-Clause",
