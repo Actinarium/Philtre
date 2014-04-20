@@ -55,7 +55,7 @@ class BundledPipeline implements ExecutionManager
         $this->fillInitialData();
 
         // If there's filter chain (well, there might be not...), create filters with contexts one by one and execute
-        if (is_array($this->configuration->chain)) {
+        if (property_exists($this->configuration, 'chain') && is_array($this->configuration->chain)) {
             foreach ($this->configuration->chain as $filter) {
                 $filterContext = $this->getFilterContext($filter);
                 $this->injectRequiredStreams($filter, $filterContext);
@@ -97,7 +97,7 @@ class BundledPipeline implements ExecutionManager
 
     private function fillInitialData()
     {
-        if (is_object($this->configuration->initStreams)) {
+        if (property_exists($this->configuration, 'initStreams') && is_object($this->configuration->initStreams)) {
             foreach ($this->configuration->initStreams as $streamId => $data) {
                 $this->streamHolder->setData($streamId, $data);
             }
@@ -106,7 +106,7 @@ class BundledPipeline implements ExecutionManager
 
     private function populateFiltersMap()
     {
-        if (is_object($this->configuration->filters)) {
+        if (property_exists($this->configuration, 'filters') && is_object($this->configuration->filters)) {
             $this->filterClassMap = (array)$this->configuration->filters;
         } else {
             $this->filterClassMap = array();
@@ -116,7 +116,7 @@ class BundledPipeline implements ExecutionManager
     private function getFilterContext($filter)
     {
         // If named context is given, use it (allows sharing), otherwise create anonymous context
-        if (is_string($filter->context)) {
+        if (property_exists($filter, 'context') && is_string($filter->context)) {
             return $this->requireNamedContext($filter->context);
         } else {
             return new StreamedFilterContext();
@@ -133,7 +133,7 @@ class BundledPipeline implements ExecutionManager
     private function createFilter($filter, $filterContext)
     {
         // Resolve classname from provided parameter and get object instance
-        if (isset($filter->filter) && is_string($filter->filter)) {
+        if (property_exists($filter, 'filter') && is_string($filter->filter)) {
             if (array_key_exists($filter->filter, $this->filterClassMap)) {
                 $filterClassName = $this->filterClassMap[$filter->filter];
             } else {
@@ -147,7 +147,7 @@ class BundledPipeline implements ExecutionManager
 
     private function injectRequiredStreams($filter, StreamOperatingFilterContext $filterContext)
     {
-        if (is_object($filter->inject)) {
+        if (property_exists($filter, 'inject') && is_object($filter->inject)) {
             foreach ($filter->inject as $innerId => $outerId) {
                 $filterContext->setStream($innerId, $this->streamHolder->getStream($outerId));
             }
@@ -156,7 +156,7 @@ class BundledPipeline implements ExecutionManager
 
     private function extractExportedStreams($filter, StreamOperatingFilterContext $filterContext)
     {
-        if (is_object($filter->extract)) {
+        if (property_exists($filter, 'extract') && is_object($filter->extract)) {
             foreach ($filter->extract as $innerId => $outerId) {
                 $this->streamHolder->setStream($outerId, $filterContext->getStream($innerId));
             }
@@ -166,6 +166,10 @@ class BundledPipeline implements ExecutionManager
     private function writeResult()
     {
         // If the chain is configured to return data, return data from given stream(s) as a string or indexed array
+        if (!property_exists($this->configuration, 'return')) {
+            return null;
+        }
+
         if (is_string($this->configuration->return)) {
             $this->result = $this->streamHolder->getData($this->configuration->return);
         } elseif (is_array($this->configuration->return)) {
