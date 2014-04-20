@@ -87,6 +87,9 @@ class BundledPipeline implements ExecutionManager
         $this->result = null;
     }
 
+    /**
+     * @param string $id
+     */
     private function requireNamedContext(&$id)
     {
         if (!array_key_exists($id, $this->namedContextsBag)) {

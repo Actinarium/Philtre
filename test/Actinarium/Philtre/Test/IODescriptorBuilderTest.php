@@ -11,7 +11,6 @@ namespace Actinarium\Philtre\Test;
 use Actinarium\Philtre\Core\IO\Metadata\IODescriptor;
 use Actinarium\Philtre\Core\IO\Metadata\IODescriptorBuilder;
 use Actinarium\Philtre\Core\IO\Metadata\StreamDescriptor;
-use Actinarium\Philtre\Core\IO\Streams\Stream;
 
 class IODescriptorBuilderTest extends \PHPUnit_Framework_TestCase
 {

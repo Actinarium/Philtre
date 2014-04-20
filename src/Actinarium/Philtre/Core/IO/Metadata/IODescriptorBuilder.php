@@ -24,24 +24,39 @@ class IODescriptorBuilder
 
     private $temp;
 
+    /**
+     * @param string $streamId
+     * @param string $description
+     */
     public function requires($streamId = null, $types = array(), $description = null)
     {
         $this->pushToTemp('require', $streamId, $types, $description);
         return $this;
     }
 
+    /**
+     * @param string $streamId
+     * @param string $description
+     */
     public function exports($streamId = null, $types = array(), $description = null)
     {
         $this->pushToTemp('export', $streamId, $types, $description);
         return $this;
     }
 
+    /**
+     * @param string $streamId
+     * @param string $description
+     */
     public function uses($streamId = null, $types = array(), $description = null)
     {
         $this->pushToTemp('use', $streamId, $types, $description);
         return $this;
     }
 
+    /**
+     * @param string $streamId
+     */
     public function streamId($streamId)
     {
         $this->pushToTemp(null, $streamId);
@@ -54,6 +69,9 @@ class IODescriptorBuilder
         return $this;
     }
 
+    /**
+     * @param string|null $description
+     */
     public function description($description)
     {
         $this->pushToTemp(null, null, null, $description);
@@ -72,6 +90,9 @@ class IODescriptorBuilder
         );
     }
 
+    /**
+     * @param string $type
+     */
     private function pushToTemp($type = null, $streamId = null, $types = null, $description = null)
     {
         if ($this->temp === null) {

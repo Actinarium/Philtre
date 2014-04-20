@@ -17,6 +17,7 @@ interface ExecutionManager
 {
     /**
      * @param mixed $configuration Execution Manager configuration
+     * @return void
      */
     public function __construct($configuration);
 
