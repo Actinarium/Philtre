@@ -41,30 +41,25 @@ the day you provide a properly composed object (or assoc array, but better objec
 
 ### Filters aliasing ###
 
-```json
     "filters" : {
         "fixture" : "\\Actinarium\\Philtre\\Test\\Resources\\FixtureFilter"
     }
-```
 
 This configuration allows to alias filter classes to ID's. Usually this is a global application config and is mixed into
 passed configuration, rather than duplicated in every pipeline descriptor
 
 ### Initial data ###
 
-```json
     "initStreams" : {
         "INPUT1" : "BaseOne",
         "INPUT2" : "BaseTwo"
     }
-```
 
 Here you may define the streams that should be initialized before filters start processing data. Key is stream ID within
 the manager, value can be anything that is valid for your processing chain (in this case, both are strings).
 
 ### Data to return ###
 
-```json
     "return" : {
         "input1"   : "INPUT1",
         "input2"   : "INPUT2",
@@ -72,8 +67,7 @@ the manager, value can be anything that is valid for your processing chain (in t
         "input2-2" : "INPUT2EDITEDTWICE",
         "output"   : "OUTPUT",
         "output-2" : "OUTPUTTWICE"
-    }
-```
+    },
 
 This block means: return associative array where $result['input1'] has data from stream INPUT1, $result['output-2'] has
 data from stream OUTPUTTWICE etc. **Note:** All of these streams should be present at the moment processing is done,
@@ -81,16 +75,12 @@ otherwise exception will be thrown.
 
 There are two different notations:
 
-```json
     "return" : ["INPUT1", "INPUT2", "INPUT2EDITEDONCE", "INPUT2EDITEDTWICE", "OUTPUT", "OUTPUTTWICE"],
-```
 
 This means, return associative array where the key is stream ID (e.g. $result['INPUT2EDITEDONCE']). Basically it's
 similar to the previous way but without aliasing stream ID's.
 
-```json
     "return" : "OUTPUT"
-```
 
 This means that data from only one string will be returned without being wrapped in assoc array.
 
@@ -98,7 +88,6 @@ This means that data from only one string will be returned without being wrapped
 
 Filter chain is optional, however it doesn't make much sense to create a chain without filters, right?
 
-```json
     "chain" : [
         {
             "filter"     : "fixture",
@@ -122,7 +111,6 @@ Filter chain is optional, however it doesn't make much sense to create a chain w
             // filter #n descriptor
         }
     ]
-```
 
 Chain defines a list of filters that will process data sequentially in the order how they appear on the list.
 
@@ -134,21 +122,15 @@ state-changing operations in the very end.
 
 #### filter ####
 
-```json
     "filter" : "fixture"
-```
 
-```json
     "filter" : "\\Actinarium\\Philtre\\Test\\Resources\\FixtureFilter"
-```
 
 Mandatory. You can use either ID of the filter or full classname.
 
 #### context ####
 
-```json
     "context" : "C1"
-```
 
 Optional. If you want multiple filters to share one context, you have to implicitly specify the same context ID (can be
 any string). For sandboxed filters that don't share context, you can safely omit context declaration, and the manager
@@ -156,23 +138,19 @@ will create an anonymous one just for that filter.
 
 #### parameters ####
 
-```json
     "parameters" : {
         "suffix" : "Second",
         ...
     }
-```
 
 `parameters` holds data that will be passed to current Filter's constructor.
 
 #### inject ####
 
-```json
     "inject" : {
         "IN1" : "INPUT1",
         "IN2" : "INPUT2"
     }
-```
 
 This line instructs to put INPUT1 and INPUT2 streams from the manager into current filter's context under ID's IN1 and
 IN2 respectively before the filter is triggered. These should respect filter's required and used streams.
@@ -184,12 +162,10 @@ replace the data in shared context midway.
 
 #### extract ####
 
-```json
     "extract"    : {
         "IN2" : "INPUT2EDITEDTWICE",
         "OUT" : "OUTPUTTWICE"
     }
-```
 
 This line instructs to pull IN2 and OUT streams from the current filter's context into INPUT2EDITEDTWICE and OUTPUTTWICE
 manager streams respectively after the filter has completed processing. These should respect filter's exported and used
