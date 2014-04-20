@@ -42,6 +42,9 @@ abstract class AbstractSimpleFilter implements Filter
         return $this->parameters;
     }
 
+    /**
+     * @param string $name
+     */
     protected function getParameter($name)
     {
         if (!is_string($name)) {
