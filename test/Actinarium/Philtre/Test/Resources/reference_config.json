@@ -1,0 +1,75 @@
+{
+    "filters" : {
+        "fixture" : "\\Actinarium\\Philtre\\Test\\Resources\\FixtureFilter"
+    },
+
+    "initStreams" : {
+        "INPUT1" : "BaseOne",
+        "INPUT2" : "BaseTwo"
+    },
+
+    "return" : {
+        "input1"   : "INPUT1",
+        "input2"   : "INPUT2",
+        "input2-1" : "INPUT2EDITEDONCE",
+        "input2-2" : "INPUT2EDITEDTWICE",
+        "output"   : "OUTPUT",
+        "output-2" : "OUTPUTTWICE"
+    },
+
+    "chain" : [
+        {
+            "filter"     : "fixture",
+            "context"    : "C1",
+            "parameters" : {
+                "suffix" : "First"
+            },
+            "inject"     : {
+                "IN1" : "INPUT1",
+                "IN2" : "INPUT2"
+            },
+            "extract"    : {
+                "IN2" : "INPUT2EDITEDONCE",
+                "OUT" : "OUTPUT"
+            }
+        },
+        {
+            "filter"     : "\\Actinarium\\Philtre\\Test\\Resources\\FixtureFilter",
+            "context"    : "C2",
+            "parameters" : {
+                "suffix" : "Second"
+            },
+            "inject"     : {
+                "IN1" : "INPUT1",
+                "IN2" : "INPUT2"
+            }
+        },
+        {
+            "filter"     : "fixture",
+            "context"    : "C1",
+            "parameters" : {
+                "suffix" : "Third"
+            },
+            "inject"     : {
+                "IN1" : "OUTPUT"
+            },
+            "extract"    : {
+                "IN2" : "INPUT2EDITEDTWICE",
+                "OUT" : "OUTPUTTWICE"
+            }
+        },
+        {
+            "filter"     : "fixture",
+            "parameters" : {
+                "suffix" : "Fourth"
+            },
+            "inject"     : {
+                "IN1" : "INPUT1",
+                "IN2" : "INPUT2"
+            },
+            "extract"    : {
+                "OUT" : "OUTPUT"
+            }
+        }
+    ]
+}

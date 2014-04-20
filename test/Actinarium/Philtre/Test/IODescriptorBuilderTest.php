@@ -92,4 +92,24 @@ class IODescriptorBuilderTest extends \PHPUnit_Framework_TestCase
         $types = $types[0]->getTypes();
         $this->assertEquals(array("Type1", "Type2", "Type3", "Type4", "Type5"), $types);
     }
+
+    /**
+     * Descriptor must have an ID and at least one type. Description is optional
+     *
+     * @expectedException \InvalidArgumentException
+     */
+    public function testFailsWhenIDMissing()
+    {
+        $builder = new IODescriptorBuilder();
+        $builder->requires()->type('type')->get();
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testFailsWhenTypeMissing()
+    {
+        $builder = new IODescriptorBuilder();
+        $builder->exports()->streamId('ID')->get();
+    }
 }

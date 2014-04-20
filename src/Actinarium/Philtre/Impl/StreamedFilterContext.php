@@ -25,7 +25,7 @@ use InvalidArgumentException;
 class StreamedFilterContext implements FilterContext, StreamOperatingFilterContext
 {
     /** @var Stream[] */
-    protected $streamsBag;
+    protected $streamsBag = array();
 
     /**
      * @inheritdoc

@@ -29,17 +29,22 @@ class BundledPipeline implements ExecutionManager
     private $namedContextsBag;
     /** @var array */
     private $filterClassMap;
+    /** @var array|string|null */
+    private $result;
 
     public function __construct($configuration)
     {
         $this->configuration = $configuration;
-        $this->objectizeConfig();
+        $this->canonizeConfig();
         $this->populateFiltersMap();
     }
 
     /**
-     * @throws InvalidArgumentException
-     * @return mixed|null
+     * Perform processing and return result according to configuration.
+     * Result can also be obtained using {@link #getResult} method afterwards.
+     *
+     * @throws \InvalidArgumentException
+     * @return array|string|null Result - the data to be returned according to configuration
      */
     public function process()
     {
@@ -53,38 +58,33 @@ class BundledPipeline implements ExecutionManager
         if (is_array($this->configuration->chain)) {
             foreach ($this->configuration->chain as $filter) {
                 $filterContext = $this->getFilterContext($filter);
-                $filterObject = $this->createFilter($filter, $filterContext);
                 $this->injectRequiredStreams($filter, $filterContext);
+                $filterObject = $this->createFilter($filter, $filterContext);
                 $filterObject->process();
                 $this->extractExportedStreams($filter, $filterContext);
             }
         }
 
-        // If the chain is configured to return data, return data from given stream(s) as a string or indexed array
-        switch ($this->getReturnType()) {
-            case 1:
-                return $this->streamHolder->getData($this->configuration->return);
-            case 2:
-                $dataArray = array();
-                foreach ($this->configuration->return as $streamId) {
-                    $dataArray[$streamId] = $this->streamHolder->getData($streamId);
-                }
-                return $dataArray;
-            case 3:
-                $dataArray = array();
-                foreach ($this->configuration->return as $exportId => $streamId) {
-                    $dataArray[$exportId] = $this->streamHolder->getData($streamId);
-                }
-                return $dataArray;
-            default:
-                return null;
-        }
+        // Create return data (might be null, a string or an assoc array) and return it
+        $this->writeResult();
+        return $this->result;
+    }
+
+    /**
+     * Get processing result
+     *
+     * @return array|string|null
+     */
+    public function getResult()
+    {
+        return $this->result;
     }
 
     private function flush()
     {
         $this->streamHolder = new StreamedFilterContext();
         $this->namedContextsBag = array();
+        $this->result = null;
     }
 
     private function requireNamedContext(&$id)
@@ -113,7 +113,7 @@ class BundledPipeline implements ExecutionManager
         }
     }
 
-    private function getFilterContext(&$filter)
+    private function getFilterContext($filter)
     {
         // If named context is given, use it (allows sharing), otherwise create anonymous context
         if (is_string($filter->context)) {
@@ -147,8 +147,8 @@ class BundledPipeline implements ExecutionManager
 
     private function injectRequiredStreams($filter, StreamOperatingFilterContext $filterContext)
     {
-        if (is_object($filter->requires)) {
-            foreach ($filter->requires as $innerId => $outerId) {
+        if (is_object($filter->inject)) {
+            foreach ($filter->inject as $innerId => $outerId) {
                 $filterContext->setStream($innerId, $this->streamHolder->getStream($outerId));
             }
         }
@@ -156,30 +156,39 @@ class BundledPipeline implements ExecutionManager
 
     private function extractExportedStreams($filter, StreamOperatingFilterContext $filterContext)
     {
-        if (is_object($filter->exports)) {
-            foreach ($filter->exports as $innerId => $outerId) {
+        if (is_object($filter->extract)) {
+            foreach ($filter->extract as $innerId => $outerId) {
                 $this->streamHolder->setStream($outerId, $filterContext->getStream($innerId));
             }
         }
     }
 
-    private function getReturnType()
+    private function writeResult()
     {
+        // If the chain is configured to return data, return data from given stream(s) as a string or indexed array
         if (is_string($this->configuration->return)) {
-            return 1;
+            $this->result = $this->streamHolder->getData($this->configuration->return);
         } elseif (is_array($this->configuration->return)) {
-            return 2;
+            $dataArray = array();
+            foreach ($this->configuration->return as $streamId) {
+                $dataArray[$streamId] = $this->streamHolder->getData($streamId);
+            }
+            $this->result = $dataArray;
         } elseif (is_object($this->configuration->return)) {
-            return 3;
+            $dataArray = array();
+            foreach ($this->configuration->return as $exportId => $streamId) {
+                $dataArray[$exportId] = $this->streamHolder->getData($streamId);
+            }
+            $this->result = $dataArray;
         } else {
-            return 0;
+            $this->result = null;
         }
     }
 
     /**
      * A dirty method to convert provided configuration into expected format
      */
-    private function objectizeConfig()
+    private function canonizeConfig()
     {
         if (is_array($this->configuration)) {
             $this->configuration = json_decode(json_encode($this->configuration));

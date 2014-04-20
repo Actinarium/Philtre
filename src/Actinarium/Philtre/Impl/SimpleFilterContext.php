@@ -23,7 +23,7 @@ use InvalidArgumentException;
 class SimpleFilterContext implements FilterContext
 {
     /** @var mixed[] */
-    protected $dataBag;
+    protected $dataBag = array();
 
     /**
      * @inheritdoc
