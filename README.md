@@ -20,7 +20,7 @@ I did not find any fitting solutions, therefore implemented one myself.
 Currently it's early in development, therefore don't expect it to do much or to have good documentation (although I try
 to write meaningful docblocks).
 
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/b/Actine/philtre/badges/quality-score.png?s=d743db2f7a0e805573c62ba58acf195df32c4e09)](https://scrutinizer-ci.com/b/Actine/philtre/)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Actine/Philtre/badges/quality-score.png?s=07778802eec5ba36702f58da881451719a9ba9af)](https://scrutinizer-ci.com/g/Actine/Philtre/)
 
 License
 -------
