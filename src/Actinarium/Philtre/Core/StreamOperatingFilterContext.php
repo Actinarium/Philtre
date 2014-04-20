@@ -8,6 +8,7 @@
 namespace Actinarium\Philtre\Core;
 
 
+use Actinarium\Philtre\Core\IO\ReadableWrapper;
 use Actinarium\Philtre\Core\IO\Streams\Stream;
 
 /**
@@ -31,11 +32,11 @@ interface StreamOperatingFilterContext
      * Put a stream with wrapped data
      *
      * @param string $streamId
-     * @param \Actinarium\Philtre\Core\IO\Streams\Stream $stream
+     * @param ReadableWrapper $stream
      *
      * @return void
      */
-    public function setStream($streamId, Stream $stream);
+    public function setStream($streamId, $stream);
 
     /**
      * Get stream with data

@@ -10,20 +10,30 @@ namespace Actinarium\Philtre\Impl;
 
 use Actinarium\Philtre\Core\Filter;
 use Actinarium\Philtre\Core\ExecutionManager;
+use Actinarium\Philtre\Core\FilterContext;
+use Actinarium\Philtre\Core\StreamOperatingFilterContext;
 use InvalidArgumentException;
 
+/**
+ * A reference execution manager that executes filters sequentially and takes care of sandboxing and stream ID aliasing
+ *
+ * @package Actinarium\Philtre\Impl
+ */
 class BundledPipeline implements ExecutionManager
 {
     /** @var object */
     private $configuration;
-    /** @var PromisingStreamedFilterContext */
+    /** @var StreamedFilterContext */
     private $streamHolder;
-    /** @var PromisingStreamedFilterContext[] */
+    /** @var StreamedFilterContext[] */
     private $namedContextsBag;
+    /** @var array */
+    private $filterClassMap;
 
     public function __construct($configuration)
     {
         $this->configuration = $configuration;
+        $this->populateFiltersMap();
     }
 
     /**
@@ -36,98 +46,142 @@ class BundledPipeline implements ExecutionManager
         $this->flush();
 
         // Fill context with initial data from configuration, if provided
-        if (isset($this->configuration->initStreams) && is_object($this->configuration->initStreams)) {
-            foreach ($this->configuration->initStreams as $streamId => $data) {
-                $this->streamHolder->setData($streamId, $data);
-            }
-        }
+        $this->fillInitialData();
 
-        // Extract filters map from configuration
-        if (isset($this->configuration->filters) && is_object($this->configuration->filters)) {
-            $filterClassMap = (array)$this->configuration->filters;
-        } else {
-            $filterClassMap = array();
-        }
-
-        // If there's filter chain (well, there might be not...), create filters and contexts
-        if (isset($this->configuration->chain) && is_array($this->configuration->chain)) {
-            $filterList = array();
-
+        // If there's filter chain (well, there might be not...), create filters with contexts one by one and execute
+        if (is_array($this->configuration->chain)) {
             foreach ($this->configuration->chain as $filter) {
-                // If named context is given, use it (allows sharing), otherwise create anonymous context
-                if (isset($filter->context) && is_string($filter->context)) {
-                    $filterContext = $this->requireNamedContext($filter->context);
-                } else {
-                    $filterContext = new PromisingStreamedFilterContext();
-                }
-
-                // Perform unchecked wiring of I/O
-                if (isset($filter->requires) && is_object($filter->requires)) {
-                    foreach ($filter->requires as $innerId => $globalId) {
-                        $filterContext->setStream($innerId, $this->streamHolder->getStream($globalId));
-                    }
-                }
-                if (isset($filter->exports) && is_object($filter->exports)) {
-                    foreach ($filter->exports as $innerId => $globalId) {
-                        $this->streamHolder->setStream($globalId, $filterContext->getStream($innerId));
-                    }
-                }
-
-                // Classname: look up if it's registered as an ID (alias), otherwise try to use it as class
-                if (isset($filter->filter) && is_string($filter->filter)) {
-                    if (array_key_exists($filter->filter, $filterClassMap)) {
-                        $filterClassName = $filterClassMap[$filter->filter];
-                    } else {
-                        $filterClassName = $filter->filter;
-                    }
-                    $filterObject = new $filterClassName($filterContext, $filter->parameters);
-                } else {
-                    throw new InvalidArgumentException("One of filters doesn't have 'filter' field set properly");
-                }
-
-                // Add the filter to execution queue
-                $filterList[] = $filterObject;
-            }
-
-            // Finally, if nothing failed previously, execute all filters one by one
-            foreach ($filterList as $filter) {
-                /** @var $filter Filter */
-                $filter->process();
+                $filterContext = $this->getFilterContext($filter);
+                $filterObject = $this->createFilter($filter, $filterContext);
+                $this->injectRequiredStreams($filter, $filterContext);
+                $filterObject->process();
+                $this->extractExportedStreams($filter, $filterContext);
             }
         }
 
         // If the chain is configured to return data, return data from given stream(s) as a string or indexed array
-        if (isset($this->configuration->return)) {
-            if (is_string($this->configuration->return)) {
+        switch ($this->getReturnType()) {
+            case 1:
                 return $this->streamHolder->getData($this->configuration->return);
-            } elseif (is_array($this->configuration->return)) {
+            case 2:
                 $dataArray = array();
                 foreach ($this->configuration->return as $streamId) {
                     $dataArray[$streamId] = $this->streamHolder->getData($streamId);
                 }
                 return $dataArray;
-            } elseif (is_object($this->configuration->return)) {
+            case 3:
                 $dataArray = array();
                 foreach ($this->configuration->return as $exportId => $streamId) {
                     $dataArray[$exportId] = $this->streamHolder->getData($streamId);
                 }
                 return $dataArray;
-            }
+            default:
+                return null;
         }
-        return null;
     }
 
     private function flush()
     {
-        $this->streamHolder = new PromisingStreamedFilterContext();
+        $this->streamHolder = new StreamedFilterContext();
         $this->namedContextsBag = array();
     }
 
     private function requireNamedContext(&$id)
     {
         if (!array_key_exists($id, $this->namedContextsBag)) {
-            $this->namedContextsBag[$id] = new PromisingStreamedFilterContext();
+            $this->namedContextsBag[$id] = new StreamedFilterContext();
         }
         return $this->namedContextsBag[$id];
+    }
+
+    private function fillInitialData()
+    {
+        if (self::isIterable($this->configuration->initStreams)) {
+            foreach ($this->configuration->initStreams as $streamId => $data) {
+                $this->streamHolder->setData($streamId, $data);
+            }
+        }
+    }
+
+    private function populateFiltersMap()
+    {
+        if (self::isIterable($this->configuration->filters)) {
+            $this->filterClassMap = (array)$this->configuration->filters;
+        } else {
+            $this->filterClassMap = array();
+        }
+    }
+
+    private function getFilterContext(&$filter)
+    {
+        // If named context is given, use it (allows sharing), otherwise create anonymous context
+        if (is_string($filter->context)) {
+            return $this->requireNamedContext($filter->context);
+        } else {
+            return new StreamedFilterContext();
+        }
+    }
+
+    /**
+     * @param               $filter
+     * @param FilterContext $filterContext
+     *
+     * @return Filter
+     * @throws \InvalidArgumentException
+     */
+    private function createFilter($filter, $filterContext)
+    {
+        // Resolve classname from provided parameter and get object instance
+        if (isset($filter->filter) && is_string($filter->filter)) {
+            if (array_key_exists($filter->filter, $this->filterClassMap)) {
+                $filterClassName = $this->filterClassMap[$filter->filter];
+            } else {
+                $filterClassName = $filter->filter;
+            }
+            return new $filterClassName($filterContext, $filter->parameters);
+        } else {
+            throw new InvalidArgumentException("One of filters doesn't have 'filter' field set properly");
+        }
+    }
+
+    private function injectRequiredStreams($filter, StreamOperatingFilterContext $filterContext)
+    {
+        if (self::isIterable($filter->requires)) {
+            foreach ($filter->requires as $innerId => $outerId) {
+                $filterContext->setStream($innerId, $this->streamHolder->getStream($outerId));
+            }
+        }
+    }
+
+    private function extractExportedStreams($filter, StreamOperatingFilterContext $filterContext)
+    {
+        if (self::isIterable($filter->exports)) {
+            foreach ($filter->exports as $innerId => $outerId) {
+                $this->streamHolder->setStream($outerId, $filterContext->getStream($innerId));
+            }
+        }
+    }
+
+    private function getReturnType()
+    {
+        if (is_string($this->configuration->return)) {
+            return 1;
+        } elseif (self::isIterable($this->configuration->return)) {
+            return 3;
+        } elseif (is_array($this->configuration->return)) {
+            return 2;
+        } else {
+            return 0;
+        }
+    }
+
+    private static function isIterable(&$var)
+    {
+        return isset($var) && (is_object($var) || (self::isAssoc($var)));
+    }
+
+    private static function isAssoc(&$var)
+    {
+        return is_array($var) && count(array_filter(array_keys($var))) === count($var);
     }
 }

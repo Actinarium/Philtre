@@ -15,8 +15,8 @@ $inputString = "Hello World!";
 $filterConfig1 = json_decode('{"regex" : "@Wor@", "replacement" : "Phi"}');
 $filterConfig2 = json_decode('{"regex" : "@d(?=!)@", "replacement" : "tre"}');
 
-$context1 = new PromisingStreamedFilterContext();
-$context2 = new PromisingStreamedFilterContext();
+$context1 = new WiringFilterContext();
+$context2 = new WiringFilterContext();
 $context1->setData("in", $inputString);
 $context2->setStream("in", $context1->getStream("out"));
 $filter1 = new RegexReplaceFilter($context1, $filterConfig1);

@@ -14,6 +14,14 @@ use Actinarium\Philtre\Core\IO\Streams\Stream;
 use Actinarium\Philtre\Core\StreamOperatingFilterContext;
 use InvalidArgumentException;
 
+/**
+ * Unlike {@link SimpleFilterContext}, this filter implicitly wraps data in immutable Stream objects. It is possible
+ * to get both the data and the Stream itself to pass to another context. Since Streams are immutable, upon putting data
+ * at existent streamId, a new Stream will be created - that makes this type of context safe for efficiently sharing
+ * data between contexts without a risk of it being overwritten.
+ *
+ * @package Actinarium\Philtre\Impl
+ */
 class StreamedFilterContext implements FilterContext, StreamOperatingFilterContext
 {
     /** @var Stream[] */
@@ -59,16 +67,19 @@ class StreamedFilterContext implements FilterContext, StreamOperatingFilterConte
     /**
      * Put a stream without unwrapping data
      *
-     * @param        $streamId
+     * @param string $streamId
      * @param Stream $stream
      *
      * @return void
      * @throws \InvalidArgumentException
      */
-    public function setStream($streamId, Stream $stream)
+    public function setStream($streamId, $stream)
     {
         if (!is_string($streamId)) {
             throw new InvalidArgumentException("Non-string entity was provided as stream ID");
+        }
+        if (!$stream instanceof Stream) {
+            throw new InvalidArgumentException("Stream must be an instance of Stream for this type of context");
         }
         $this->streamsBag[$streamId] = $stream;
     }
@@ -76,7 +87,7 @@ class StreamedFilterContext implements FilterContext, StreamOperatingFilterConte
     /**
      * Get a stream without unwrapping data
      *
-     * @param $streamId
+     * @param string $streamId
      *
      * @throws \InvalidArgumentException
      * @throws \Actinarium\Philtre\Core\Exceptions\UnregisteredStreamException

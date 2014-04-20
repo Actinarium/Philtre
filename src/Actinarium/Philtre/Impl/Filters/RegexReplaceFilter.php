@@ -13,7 +13,6 @@ use Actinarium\Philtre\Core\AbstractSimpleFilter;
 
 class RegexReplaceFilter extends AbstractSimpleFilter implements DeclaringIO
 {
-
     private static $ioDescriptor;
 
     public function getIODescriptor()
