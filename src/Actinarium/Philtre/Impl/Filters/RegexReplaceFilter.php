@@ -29,12 +29,12 @@ class RegexReplaceFilter extends AbstractSimpleFilter implements DeclaringIO
 
     public function process()
     {
-        $input = $this->getFilterContext()->getData("in");
+        $input = $this->filterContext->getData("in");
         $output = preg_replace(
-            $this->getParameters()->regex,
-            $this->getParameters()->replacement,
+            $this->getParameter('regex'),
+            $this->getParameter('replacement'),
             $input
         );
-        $this->getFilterContext()->setData("out", $output);
+        $this->filterContext->setData("out", $output);
     }
 }

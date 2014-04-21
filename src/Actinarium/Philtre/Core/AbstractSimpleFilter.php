@@ -19,9 +19,9 @@ use InvalidArgumentException;
 abstract class AbstractSimpleFilter implements Filter
 {
     /** @var FilterContext */
-    private $filterContext;
+    protected $filterContext;
     /** @var array|object|null */
-    private $parameters;
+    protected $parameters;
 
     /**
      * @inheritdoc

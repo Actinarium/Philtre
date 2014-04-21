@@ -31,7 +31,7 @@ class StringConcatFilter extends AbstractSimpleFilter implements DeclaringIO
 
     public function process()
     {
-        $string = $this->getFilterContext()->getData('in1') . $this->getFilterContext()->getData('in2');
-        $this->getFilterContext()->setData('out', $string);
+        $string = $this->filterContext->getData('in1') . $this->filterContext->getData('in2');
+        $this->filterContext->setData('out', $string);
     }
 }
