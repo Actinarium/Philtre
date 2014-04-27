@@ -6,7 +6,7 @@ Currently the library is early in development, and I cannot afford to spend more
 this library myself for a project that is soon due, but decided to share it since someone else might find it useful.
 So please forgive poor documentation for now, and take a look at phpdoc / tests to understand how it works instead.
 
-[![Build Status](https://travis-ci.org/Actine/Philtre.svg?branch=master)](https://travis-ci.org/Actine/Philtre)
+[![Build Status](https://travis-ci.org/Actinarium/Philtre.svg?branch=master)](https://travis-ci.org/Actinarium/Philtre)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Actine/Philtre/badges/quality-score.png?s=07778802eec5ba36702f58da881451719a9ba9af)](https://scrutinizer-ci.com/g/Actine/Philtre/)
 
 ## License ##
