@@ -7,7 +7,7 @@ this library myself for a project that is soon due, but decided to share it sinc
 So please forgive poor documentation for now, and take a look at phpdoc / tests to understand how it works instead.
 
 [![Build Status](https://travis-ci.org/Actinarium/Philtre.svg?branch=master)](https://travis-ci.org/Actinarium/Philtre)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Actine/Philtre/badges/quality-score.png?s=07778802eec5ba36702f58da881451719a9ba9af)](https://scrutinizer-ci.com/g/Actine/Philtre/)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Actinarium/Philtre/badges/quality-score.png?s=5ec5f2503215894b24fd0d5772e55e3fdbc0fd48)](https://scrutinizer-ci.com/g/Actinarium/Philtre/)
 
 ## License ##
 
