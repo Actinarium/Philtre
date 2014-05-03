@@ -8,6 +8,7 @@ So please forgive poor documentation for now, and take a look at phpdoc / tests 
 
 [![Build Status](https://travis-ci.org/Actinarium/Philtre.svg?branch=master)](https://travis-ci.org/Actinarium/Philtre)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Actinarium/Philtre/badges/quality-score.png?s=5ec5f2503215894b24fd0d5772e55e3fdbc0fd48)](https://scrutinizer-ci.com/g/Actinarium/Philtre/)
+[![Code Coverage](https://scrutinizer-ci.com/g/Actinarium/Philtre/badges/coverage.png?s=e1a1b80d572f9336fdca9d26c3cc17a2df8e733d)](https://scrutinizer-ci.com/g/Actinarium/Philtre/)
 
 ## License ##
 
