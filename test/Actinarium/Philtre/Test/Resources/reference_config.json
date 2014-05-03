@@ -3,9 +3,14 @@
         "fixture" : "\\Actinarium\\Philtre\\Test\\Resources\\FixtureFilter"
     },
 
-    "initStreams" : {
+    "streams" : {
         "INPUT1" : "BaseOne",
         "INPUT2" : "BaseTwo"
+    },
+
+    "parameters" : {
+        "paramOne" : "First",
+        "paramThree" : "Third"
     },
 
     "return" : {
@@ -22,7 +27,7 @@
             "filter"     : "fixture",
             "context"    : "C1",
             "parameters" : {
-                "suffix" : "First"
+                "suffix" : "%paramOne%"
             },
             "inject"     : {
                 "IN1" : "INPUT1",
@@ -48,7 +53,7 @@
             "filter"     : "fixture",
             "context"    : "C1",
             "parameters" : {
-                "suffix" : "Third"
+                "suffix" : "%paramThree%"
             },
             "inject"     : {
                 "IN1" : "OUTPUT"

@@ -50,13 +50,35 @@ passed configuration, rather than duplicated in every pipeline descriptor
 
 ### Initial data ###
 
-    "initStreams" : {
+#### Streams ####
+
+    "streams" : {
         "INPUT1" : "BaseOne",
         "INPUT2" : "BaseTwo"
     }
 
 Here you may define the streams that should be initialized before filters start processing data. Key is stream ID within
 the manager, value can be anything that is valid for your processing chain (in this case, both are strings).
+
+#### Parameters ####
+
+    "parameters" : {
+        "paramOne" : "One",
+        "paramTwo" : [2, 3]
+    }
+
+Here you may define parameters that you can later pass as parameters to your filters. To use a parameter defined here
+you should pass its ID wrapped in percent signs:
+
+    ...
+    "filter"     : "fixture",
+    "parameters" : {
+        "someParam"  : "%paramOne%",
+        "someParam2" : "%paramTwo%"
+    },
+    ...
+
+Values can be anything that is valid for your processing chain (in this case, both are strings).
 
 ### Data to return ###
 
@@ -139,11 +161,13 @@ will create an anonymous one just for that filter.
 #### parameters ####
 
     "parameters" : {
-        "suffix" : "Second",
+        "suffix"        : "Second",
+        "externalParam" : "%paramSetForWholeChain%",
         ...
     }
 
-`parameters` holds data that will be passed to current Filter's constructor.
+`parameters` holds data that will be passed to current Filter's constructor. Parameters can be of any type, not just
+strings. You can use parameters defined globally by wrapping their ID's in percent signs.
 
 #### inject ####
 

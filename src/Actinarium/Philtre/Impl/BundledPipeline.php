@@ -8,6 +8,7 @@
 namespace Actinarium\Philtre\Impl;
 
 
+use Actinarium\Philtre\Core\Exceptions\UndeclaredParameterException;
 use Actinarium\Philtre\Core\Filter;
 use Actinarium\Philtre\Core\ExecutionManager;
 use Actinarium\Philtre\Core\FilterContext;
@@ -25,6 +26,8 @@ class BundledPipeline implements ExecutionManager
     private $configuration;
     /** @var StreamedFilterContext */
     private $streamHolder;
+    /** @var array[] */
+    private $parameters;
     /** @var StreamedFilterContext[] */
     private $namedContextsBag;
     /** @var array */
@@ -58,6 +61,7 @@ class BundledPipeline implements ExecutionManager
         if (property_exists($this->configuration, 'chain') && is_array($this->configuration->chain)) {
             foreach ($this->configuration->chain as $filter) {
                 $filterContext = $this->getFilterContext($filter);
+                $this->prepareFilterParameters($filter);
                 $this->injectRequiredStreams($filter, $filterContext);
                 $filterObject = $this->createFilter($filter, $filterContext);
                 $filterObject->process();
@@ -83,6 +87,7 @@ class BundledPipeline implements ExecutionManager
     private function flush()
     {
         $this->streamHolder = new StreamedFilterContext();
+        $this->parameters = array();
         $this->namedContextsBag = array();
         $this->result = null;
     }
@@ -100,10 +105,13 @@ class BundledPipeline implements ExecutionManager
 
     private function fillInitialData()
     {
-        if (property_exists($this->configuration, 'initStreams') && is_object($this->configuration->initStreams)) {
-            foreach ($this->configuration->initStreams as $streamId => $data) {
+        if (property_exists($this->configuration, 'streams') && is_object($this->configuration->streams)) {
+            foreach ($this->configuration->streams as $streamId => $data) {
                 $this->streamHolder->setData($streamId, $data);
             }
+        }
+        if (property_exists($this->configuration, 'parameters') && is_object($this->configuration->parameters)) {
+            $this->parameters = (array)$this->configuration->parameters;
         }
     }
 
@@ -146,6 +154,36 @@ class BundledPipeline implements ExecutionManager
         } else {
             throw new InvalidArgumentException("One of filters doesn't have 'filter' field set properly");
         }
+    }
+
+    private function prepareFilterParameters($filter)
+    {
+        if (property_exists($filter, 'parameters')) {
+            $filter->parameters = $this->resolveParametersRecursively($filter->parameters);
+        }
+    }
+
+    private function resolveParametersRecursively($field)
+    {
+        if (is_string($field)) {
+            if (preg_match('|^%[^%]+%$|', $field)) {
+                $paramName = substr($field, 1, -1);
+                if (array_key_exists($paramName, $this->parameters)) {
+                    return $this->parameters[$paramName];
+                } else {
+                    throw new UndeclaredParameterException("Parameter $paramName is not set");
+                }
+            }
+        } elseif (is_array($field)) {
+            foreach ($field as $key => $item) {
+                $field[$key] = $this->resolveParametersRecursively($item);
+            }
+        } elseif (is_object($field)) {
+            foreach ($field as $key => $item) {
+                $field->$key = $this->resolveParametersRecursively($item);
+            }
+        }
+        return $field;
     }
 
     private function injectRequiredStreams($filter, StreamOperatingFilterContext $filterContext)
